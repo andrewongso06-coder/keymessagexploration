@@ -174,6 +174,10 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;text-align:center}
 .cats button.on{background:var(--ink);border-color:var(--ink);color:#fff}
 .cats button.on small{color:#d9cbb8}
 .cat-hint{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.wm-badge{position:fixed;right:14px;bottom:14px;z-index:20;background:rgba(31,27,22,.88);color:#fff;font:600 12px Inter,sans-serif;padding:7px 12px;border-radius:99px;box-shadow:0 4px 14px rgba(0,0,0,.18);pointer-events:none}
+body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='220'><text x='10' y='130' transform='rotate(-20 210 110)' font-family='Inter,Arial' font-size='18' font-weight='700' fill='%231f1b16'>Worksheet by Andrew - BAIK Digital</text></svg>")}
+.wrap{position:relative;z-index:1}
+.disc{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent-2);border-radius:10px;padding:12px 14px;font-size:13.5px;margin:0 0 14px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none}
 .toast.show{opacity:1}
 </style>
@@ -182,9 +186,9 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;text-align:center}
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="eyebrow">Funnel Worksheet</div>
+      <div class="eyebrow">Funnel Worksheet · by Andrew - BAIK Digital</div>
       <h1>Satu Janji, Banyak Pintu</h1>
-      <div class="sub">Pilih kategori bisnismu, lalu isi 8 langkah. Setiap kolom punya contoh sesuai kategori. Output funnel, simulasi perjalanan pembeli, brief creator, kerangka halaman, dan strategi langsung terbentuk di bagian bawah.</div>
+      <div class="sub">Isi 8 langkah untuk brand dan hero product-mu. Setiap kolom punya contoh sebagai panduan. Output funnel, simulasi perjalanan pembeli, brief creator, kerangka halaman, dan strategi langsung terbentuk di bagian bawah.</div>
     </div>
     <div class="actions">
       <button id="btnDemo">Isi contoh</button>
@@ -193,6 +197,7 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;text-align:center}
     </div>
   </header>
 
+  <div class="disc"><b>Disclaimer:</b> Romelle (itsromelle.com) <b>bukan klien</b> BAIK Digital. Romelle dipakai sebagai studi kasus karena iklannya sering muncul di feed kami dan menurut kami funnel-nya rapi. Semua data diambil dari iklan publik di Meta Ads Library. Angka yang dikutip (penjualan, rating, dan sejenisnya) adalah klaim brand di iklan dan halaman mereka, bukan data yang kami verifikasi.</div>
   <div class="why" style="margin:0 0 14px"><b>Cara pakai:</b> (1) isi tiap langkah untuk brand dan hero product-mu, gunakan contoh di bawah tiap kolom sebagai panduan, (2) gulir ke bawah: blueprint funnel, ide iklan, brief creator, kerangka halaman, dan simulasi perjalanan pembeli terbentuk otomatis. Tombol "Isi contoh" hanya untuk melihat cara kerjanya; tekan "Kosongkan semua" sebelum mulai mengisi.</div>
   <div class="progress">
     <div class="meta"><span id="progTxt">0% terisi</span><span>Tersimpan otomatis di browser ini</span></div>
@@ -204,7 +209,7 @@ footer{margin-top:40px;color:var(--muted);font-size:12.5px;text-align:center}
 
   <div id="output"></div>
 
-  <footer>Framework "Satu Janji, Banyak Pintu" · Isianmu hanya tersimpan di browser ini dan tidak dikirim ke mana pun. Contoh di tiap kolom diambil dari pola iklan publik Romelle di Meta Ads Library.</footer>
+  <footer>Worksheet by Andrew - BAIK Digital · Framework "Satu Janji, Banyak Pintu" · Isianmu hanya tersimpan di browser ini dan tidak dikirim ke mana pun. Contoh di tiap kolom diambil dari pola iklan publik Romelle di Meta Ads Library.<br>Romelle bukan klien BAIK Digital, hanya dipakai sebagai studi kasus.</footer>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -701,7 +706,7 @@ function build(){
   </div>`;
   JCTX = {d,B,P,K,janji,personas,cells,objs,BR,lpMain,reasons,L,demoTxt,lead};
   renderJourney();
-  $("#btnCopy").onclick = async()=>{try{await navigator.clipboard.writeText($("#outBody").innerText);toast("Output tersalin")}catch(e){toast("Gagal menyalin — blok teks lalu salin manual")}};
+  $("#btnCopy").onclick = async()=>{try{await navigator.clipboard.writeText($("#outBody").innerText+"\n\n— Worksheet by Andrew - BAIK Digital");toast("Output tersalin")}catch(e){toast("Gagal menyalin — blok teks lalu salin manual")}};
 }
 
 /* ---------- JOURNEY ---------- */
@@ -807,5 +812,6 @@ $("#btnGo").onclick=()=>$("#output").scrollIntoView({behavior:"smooth"});
 loadStore(); renderForm(); setData(STORE[CATK]||{}); progress(); build();
 
 </script>
+<div class="wm-badge">Worksheet by Andrew - BAIK Digital</div>
 </body>
 </html>
