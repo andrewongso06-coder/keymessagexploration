@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Worksheet Funnel "Satu Janji, Banyak Pintu"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee;--card:#fff;--ink:#1f1b16;--muted:#6f675d;--line:#e6dfd3;
+  --accent:#6b4423;--accent-2:#a8733f;--accent-soft:#f3e9dd;
+  --tofu:#2f6f8f;--mofu:#8a5a1f;--bofu:#2f7a4f;--warn:#b4432f;--warn-soft:#fbeae6;--ok-soft:#e8f3ec;
+  --r:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,sans-serif}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:700;line-height:1.2;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 80px}
+header.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);font-weight:700}
+h1{font-size:34px;margin:6px 0 8px}
+.sub{color:var(--muted);max-width:640px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 14px Inter,sans-serif;border-radius:10px;padding:10px 14px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button:hover{filter:brightness(.96)}
+.progress{position:sticky;top:0;z-index:5;background:rgba(247,244,238,.94);backdrop-filter:blur(6px);padding:10px 0 12px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .3s}
+.progress .meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
+.progress nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.progress nav a{font-size:12px;text-decoration:none;color:var(--accent);background:var(--accent-soft);padding:4px 9px;border-radius:99px}
+section.step{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin:18px 0}
+.step-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
+.num{flex:none;width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
+.step-head h2{font-size:22px}
+.step-head p{margin:4px 0 0;color:var(--muted)}
+.why{background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:13.5px;margin:12px 0 4px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 18px;margin-top:14px}
+.grid .full{grid-column:1/-1}
+@media(max-width:720px){.grid{grid-template-columns:1fr}h1{font-size:27px}}
+.field label.lbl{display:block;font-weight:600;font-size:14px;margin-bottom:5px}
+.field input[type=text],.field input[type=number],.field textarea,.field select{width:100%;font:15px Inter,sans-serif;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fffdf9;color:var(--ink)}
+.field textarea{min-height:84px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{outline:2px solid var(--accent-2);border-color:transparent}
+.ex{font-size:12.5px;color:var(--muted);margin-top:5px;padding-left:10px;border-left:3px solid var(--accent-2)}
+.ex b{color:var(--accent)}
+.ex .use{margin-left:6px;font-size:11.5px;color:var(--accent);text-decoration:underline;cursor:pointer;background:none;border:0;padding:0}
+.chk{display:flex;gap:8px;align-items:center;font-size:13.5px;margin-top:6px}
+.chk input{width:17px;height:17px;accent-color:var(--accent)}
+.subgrp{border:1px dashed var(--line);border-radius:12px;padding:14px;grid-column:1/-1}
+.subgrp h3{font-size:16px;margin-bottom:8px}
+.demo-row{display:grid;grid-template-columns:230px 1fr;gap:12px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.demo-row:first-of-type{border-top:0}
+@media(max-width:720px){.demo-row{grid-template-columns:1fr}}
+.demo-row .dname{font-weight:600}
+.demo-row .dname small{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+
+/* output */
+#output{margin-top:36px}
+.out-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+.out-head h2{font-size:30px}
+.ocard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin:16px 0}
+.ocard h3{font-size:19px;margin-bottom:12px}
+.promise{background:var(--ink);color:#fff;border-radius:var(--r);padding:26px}
+.promise .big{font-family:Fraunces,serif;font-size:28px;line-height:1.25;margin:6px 0 16px}
+.promise .eyebrow{color:#e2b98a}
+.proofs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:720px){.proofs{grid-template-columns:1fr}}
+.proofs div{background:rgba(255,255,255,.08);border-radius:10px;padding:12px;font-size:14px}
+.proofs b{display:block;color:#e2b98a;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.bridge{margin-top:14px;font-size:15px;background:rgba(226,185,138,.16);border-radius:10px;padding:10px 12px}
+.score{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ring{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font:700 26px Fraunces,serif}
+.checklist{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.checklist li{display:flex;gap:10px;font-size:14px}
+.checklist .ic{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff}
+.ic.y{background:var(--bofu)}.ic.n{background:#c9bfb1}
+.alloc{display:flex;height:40px;border-radius:10px;overflow:hidden;margin:8px 0 6px;font-weight:600;font-size:13px;color:#fff}
+.alloc>div{display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.stage{border-left:5px solid;border-radius:10px;background:#fffdf9;padding:14px 16px;margin:12px 0}
+.stage.tofu{border-color:var(--tofu)}.stage.mofu{border-color:var(--mofu)}.stage.bofu{border-color:var(--bofu)}
+.stage h4{margin:0 0 4px;font-size:15px}
+.stage .task{color:var(--muted);font-size:13px;margin-bottom:8px}
+.stage ol{margin:0;padding-left:20px}
+.stage li{margin:5px 0;font-size:14px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--accent-soft);color:var(--accent);margin-right:5px;vertical-align:1px}
+.dest{font-size:12.5px;color:var(--muted)}
+table.matrix{width:100%;border-collapse:collapse;font-size:12.5px}
+table.matrix th,table.matrix td{border:1px solid var(--line);padding:8px;vertical-align:top;text-align:left}
+table.matrix th{background:var(--accent-soft);font-size:12.5px}
+table.matrix td .ht{font-size:10.5px;font-weight:700;color:var(--accent-2);text-transform:uppercase;letter-spacing:.04em}
+.scroll{overflow-x:auto}
+.brief{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:#fffdf9}
+.brief dl{display:grid;grid-template-columns:120px 1fr;gap:4px 10px;margin:0;font-size:14px}
+.brief dt{font-weight:600;color:var(--muted)}
+.brief dd{margin:0}
+.lp ol{padding-left:20px}.lp li{margin:6px 0}
+.lp .r{background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14px}
+.note{border-radius:10px;padding:12px 14px;margin:8px 0;font-size:14px}
+.note.warn{background:var(--warn-soft);border-left:4px solid var(--warn)}
+.note.ok{background:var(--ok-soft);border-left:4px solid var(--bofu)}
+.note.tip{background:var(--accent-soft);border-left:4px solid var(--accent-2)}
+.note b{display:block;margin-bottom:2px}
+.empty{color:var(--muted);font-style:italic;font-size:14px}
+.week{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:720px){.week{grid-template-columns:1fr 1fr}}
+.week div{background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
+.week b{display:block;font-family:Fraunces,serif;font-size:15px;margin-bottom:4px}
+footer{margin-top:40px;color:var(--muted);font-size:12.5px;text-align:center}
+/* journey */
+.jr-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.jr-top select{font:14px Inter,sans-serif;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:#fffdf9}
+.jr-ctrl{display:flex;gap:6px}
+.jr-ctrl button{padding:8px 12px}
+.track{position:relative;margin:6px 6px 22px;height:58px}
+.track .line{position:absolute;left:0;right:0;top:20px;height:4px;background:var(--line);border-radius:4px}
+.track .fill{position:absolute;left:0;top:20px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--tofu),var(--mofu),var(--bofu));transition:width .6s ease}
+.track .pt{position:absolute;top:12px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:#fff;border:3px solid var(--line);cursor:pointer;transition:all .3s}
+.track .pt.done{border-color:currentColor;background:currentColor}
+.track .pt.on{transform:scale(1.35);box-shadow:0 0 0 6px rgba(107,68,35,.12)}
+.track .pt span{position:absolute;top:26px;left:50%;transform:translateX(-50%);font-size:10.5px;color:var(--muted);white-space:nowrap}
+.track .me{position:absolute;top:-12px;margin-left:-13px;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;transition:left .6s cubic-bezier(.5,1.4,.5,1);z-index:2}
+.jr-body{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+@media(max-width:760px){.jr-body{grid-template-columns:1fr}.phone{margin:0 auto}}
+.phone{width:270px;height:500px;border-radius:34px;background:#111;padding:10px;box-shadow:0 18px 40px rgba(31,27,22,.25)}
+.screen{width:100%;height:100%;border-radius:26px;background:#fff;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.stories{display:flex;gap:3px;padding:8px 10px 4px}
+.stories i{flex:1;height:3px;border-radius:3px;background:#e5e5e5;overflow:hidden}
+.stories i b{display:block;height:100%;width:0;background:#222}
+.stories i.past b{width:100%}
+.stories i.now b{animation:fillbar var(--dur,3.6s) linear forwards}
+.stories.paused i.now b{animation-play-state:paused}
+@keyframes fillbar{to{width:100%}}
+.scr{flex:1;display:flex;flex-direction:column;animation:enter .5s ease}
+@keyframes enter{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+.adhead{display:flex;align-items:center;gap:8px;padding:6px 12px;font-size:12px}
+.adhead .av{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:11px}
+.adhead small{display:block;color:#888;font-size:10.5px}
+.creative{flex:1;margin:4px 10px;border-radius:14px;padding:14px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.creative .fmt{position:absolute;top:12px;left:12px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.22);padding:3px 8px;border-radius:99px}
+.creative .hk{font-family:Fraunces,serif;font-size:18px;line-height:1.25;text-shadow:0 1px 8px rgba(0,0,0,.25)}
+.creative .dm{font-size:11px;opacity:.85;margin-top:8px}
+.creative .blob{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12);top:-40px;right:-60px;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translate(-20px,30px)}}
+.ctab{margin:8px 10px 12px;background:#f2f2f2;border-radius:10px;padding:9px 12px;font-size:12.5px;font-weight:600;display:flex;justify-content:space-between}
+.lpm{padding:10px 14px;font-size:12px;overflow:hidden}
+.lpm .bar1{background:var(--ink);color:#fff;font-size:9.5px;padding:5px 8px;border-radius:6px;margin-bottom:10px}
+.lpm h5{font-family:Fraunces,serif;font-size:17px;margin:0 0 6px;line-height:1.2}
+.lpm .stars{color:#d49a2a;font-size:13px;margin-bottom:8px}
+.lpm .rr{background:var(--accent-soft);border-radius:8px;padding:6px 8px;margin:5px 0;animation:enter .5s ease both}
+.cartm,.donem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;gap:10px}
+.cartm .bag{width:70px;height:70px;border-radius:18px;background:var(--accent-soft);display:grid;place-items:center;font-size:30px;animation:wiggle 1.2s ease-in-out infinite}
+@keyframes wiggle{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.donem .tick{width:76px;height:76px;border-radius:50%;background:var(--bofu);color:#fff;display:grid;place-items:center;font-size:36px;animation:pop .6s cubic-bezier(.5,1.8,.5,1)}
+@keyframes pop{from{transform:scale(0)}}
+.jr-info .day{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.jr-info h4{font-family:Fraunces,serif;font-size:22px;margin:4px 0 8px}
+.jr-info .aud{display:inline-block;font-size:12px;background:#f1ede6;border-radius:8px;padding:5px 9px;margin-bottom:10px}
+.jr-info p{margin:0 0 12px;font-size:14.5px}
+.aw{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:14px 0 4px}
+.aw div{height:8px;border-radius:4px;background:var(--line);transition:background .4s}
+.aw div.on{background:var(--accent-2)}
+.awl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+.jr-log{margin-top:14px;max-height:180px;overflow:auto;border-top:1px solid var(--line);padding-top:8px}
+.jr-log div{font-size:12.5px;padding:4px 0;color:var(--muted);cursor:pointer}
+.jr-log div.on{color:var(--ink);font-weight:600}
+.jr-log div b{display:inline-block;width:62px}
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:2px 0 8px}
+@media(max-width:820px){.cats{grid-template-columns:repeat(2,1fr)}}
+.cats button{text-align:left;padding:10px 12px;line-height:1.3}
+.cats button small{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:2px}
+.cats button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.cats button.on small{color:#d9cbb8}
+.cat-hint{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Funnel Worksheet</div>
+      <h1>Satu Janji, Banyak Pintu</h1>
+      <div class="sub">Pilih kategori bisnismu, lalu isi 8 langkah. Setiap kolom punya contoh sesuai kategori. Output funnel, simulasi perjalanan pembeli, brief creator, kerangka halaman, dan strategi langsung terbentuk di bagian bawah.</div>
+    </div>
+    <div class="actions">
+      <button id="btnDemo">Isi contoh</button>
+      <button id="btnReset">Kosongkan semua</button>
+      <button class="primary" id="btnGo">Lihat output ↓</button>
+    </div>
+  </header>
+
+  <div class="why" style="margin:0 0 14px"><b>Cara pakai:</b> (1) isi tiap langkah untuk brand dan hero product-mu, gunakan contoh di bawah tiap kolom sebagai panduan, (2) gulir ke bawah: blueprint funnel, ide iklan, brief creator, kerangka halaman, dan simulasi perjalanan pembeli terbentuk otomatis. Tombol "Isi contoh" hanya untuk melihat cara kerjanya; tekan "Kosongkan semua" sebelum mulai mengisi.</div>
+  <div class="progress">
+    <div class="meta"><span id="progTxt">0% terisi</span><span>Tersimpan otomatis di browser ini</span></div>
+    <div class="bar"><i id="progBar"></i></div>
+    <nav id="stepNav"></nav>
+  </div>
+
+  <form id="ws" onsubmit="return false"></form>
+
+  <div id="output"></div>
+
+  <footer>Framework "Satu Janji, Banyak Pintu" · Isianmu hanya tersimpan di browser ini dan tidak dikirim ke mana pun. Contoh di tiap kolom diambil dari pola iklan publik Romelle di Meta Ads Library.</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- HELPERS ---------- */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const lines = s=>(s||"").split(/\n|;/).map(x=>x.trim()).filter(Boolean);
+const rp = n=>"Rp"+Math.round(n).toLocaleString("id-ID");
+const or = (v,fb)=>v&&String(v).trim()?v:fb;
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1800)}
+/* ---------- CATEGORY PACKS ---------- */
+const divBridge = (unit, tpl) => (d)=>{
+  const h=parseFloat(d.harga)||0, m=parseFloat(d.masa)||0;
+  if(!h||!m) return {ok:false};
+  const per=h/m, r = per>1000? Math.round(per/100)*100 : Math.round(per);
+  return {ok:true, short:`${rp(r)} ${unit}`, calc:`${rp(h)} ÷ ${m} = <b>${rp(r)} ${unit}</b>`, text: tpl(rp(r), or(d.pembanding,"secangkir kopi"), d)};
+};
+const CATS = {
+ fashion:{
+  label:"Produk fisik / fashion", short:"Contoh nyata: Romelle", real:true, ref:"Romelle",
+  secondIcon:"🎁",
+  bridge: divBridge("per hari",(v,p)=>`${v} per hari. Harga ${p}.`),
+  lbl:{masa:"Perkiraan masa pakai (hari)"},
+  help:{masa:"Harga ÷ masa pakai = biaya per hari.",kreatif:"Romelle: 66 iklan baru di September, 53 di Oktober. Isi angka realistis tim/creator-mu."},
+  exNote:{tujuan:"155 dari 191 iklan ke listicle \"5 Alasan\"",alasan:"diskon hanya di 18% iklan, sebagai penutup"},
+  ex:{brand:"Romelle",produk:"Sutton Bag",kategori:"tas kerja wanita",target:"perempuan pekerja yang bawa laptop + barang pribadi tiap hari",harga:"629000",masa:"365",pembanding:"segelas teh",alternatif:"tas brand luar jutaan rupiah, atau bawa dua tas sekaligus",kreatif:"30",tujuan:"Landing page pre-sell",alasan:"Value / fitur produk",
+   luar:"Simple",dalam:"organized",janji:"Simple on the outside, organized on the inside.",
+   b1:"Structured: bentuk tetap rapi walau penuh, muat laptop 14 inci + tumbler + barang kecil",b1ok:true,
+   b2:"Refined: suede + vegan leather, jahitan rapi, stud di bawah, \"keliatan mahal\"",b2ok:true,
+   b3:"Lokal tapi \"dikira brand luar\", dipakai perempuan yang tahu apa yang ia mau",b3ok:true,
+   sig:"Headline pendek bahasa Inggris + body bahasa Indonesia santai + emoji 🤎 di hampir semua iklan",
+   persona:"Corporate girl\nKoas / dokter\nIbu WFO\nPerempuan 40-an\nCowok pembeli kado",
+   momen:"Commute KRL\nBusiness trip\nHari kerja di kantor\nDay off / weekend\nAnniversary / kado",
+   pain:"Ngubek-ngubek tas pas lagi buru-buru\nHarus bawa dua tas: laptop dan barang pribadi\nTangan nggak cukup pas bawa koper",
+   oh:"\"Rp629 ribu buat tas lokal, worth it nggak?\"",ohj:"Rp1.700 per hari, harga segelas teh. Bundling Sutton + Mayfair lebih hemat.",
+   ok:"\"Belum pernah pegang, takut bahannya tipis\"",okj:"Close-up material + video real life + 14 hari free return",
+   ot:"\"Brand lokal, belum kenal\"",otj:"Cerita pemilik yang tasnya \"sering dikira brand luar\", 10.000+ pemilik",
+   compare:"Sutton vs Grand vs Petit (pilih sesuai ukuran laptop & gaya)",
+   gift:true,giftwho:"Cowok / pasangan yang cari kado",giftfear:"\"Nggak yakin dia bakal suka\" → warna netral + 14 hari bisa tukar",giftmoment:"Anniversary, Valentine, ulang tahun, Natal",
+   pcreator:"30",preaksi:"\"Dikira tas mahal\", \"Oh my God, thank you sayang\"",pangka:"10.000+ pesanan, rating 4,93/5 dari 1.500+ review",psold:"Sutton sold out dalam 5 hari, Espresso paling cepat habis",ployal:"\"My 4th Romelle bag\", \"tahun lalu dikadoin Sutton, tahun ini versi mini\"",pkom:"\"Bikin Sutton versi kecil doong\" → jadi hook launch Sutton Petit",pver:true,
+   lphasil:"Pilihan Perempuan Modern",lpsub:"Untuk perempuan yang tahu apa yang ia mau",lpbar:"Free shipping · 14 hari free return · Trusted by 10.000+ · Made in Indonesia",
+   r1:"Tetap structured walau penuh — bentuknya tidak melorot",r2:"Muat laptop 14 inci + slot tumbler + slot pulpen",r3:"Suede + vegan leather yang keliatan mahal",r4:"Bisa dijinjing, dibahu, atau diselipkan ke koper",r5:"Detail kecil: kartu ID di depan, stud di bawah, magnet",origin:"Dari cerita, rutinitas, dan kebutuhan nyata lahirlah Sutton.",
+   kode:"ROMELLE50",nilai:"Potongan Rp50 ribu",bundling:"Sutton + Mayfair sekitar Rp800 ribuan (vs 1 jutaan terpisah)",risk:"Free ongkir s/d Rp20 ribu, 14 hari return, garansi tepat waktu",scar:"Pre-order karena sold out, final pre-order batch",scarok:true,
+   lnama:"Sutton Petit",ltgl:"17 Oktober 2026",lbeda:"Versi kecil untuk day off & perempuan petite",lasal:"Ya — \"bikin Sutton versi kecil doong\""},
+  demos:["\"Laptop 13 inch, masuk. Dompet, masuk. Tumbler, masuk...\"","Laptop gaming 15,6\" dimasukkan ke Sutton Grand","Saku belakang jadi luggage sleeve, tas diselipkan ke pegangan koper","\"Dipakai berminggu-minggu, masih kokoh\", Jakarta ke London tetap rapi","Close-up suede, jahitan, stud bawah, magnet","CCTV rumah: ribet bawa banyak barang → dua tas jadi satu","Sutton vs Grand vs Petit, Sutton vs Madison"],
+  why:["Romelle tidak membangun funnel per brand, tapi per produk: Sutton dulu, lalu Petit, Madison, Sloane menyusul dengan mini-funnel masing-masing.",
+   "Tes lolos: kalau satu bukti tidak bisa dibuat jadi adegan 3 detik di kamera, ganti buktinya.",
+   "Romelle punya pintu: corporate girl, koas, dokter, PR yang sering bistrip, ibu WFO, usia 40-an, petite, creator travel, cowok pembeli kado.",
+   "Romelle membuat LP khusus untuk keberatan \"brand lokal\" (\"sering dikira brand luar\") dan untuk pembeli kado (\"14 hari bisa tukar\").",
+   "Di Romelle, 63 dari 179 materi memperlihatkan laptop, 33 tumbler, 24 koper. Hanya 1 materi tanpa demo.",
+   "Urutan Romelle dari ringan ke berat: volume creator → reaksi → angka → loyalitas → komentar komunitas → review di LP.",
+   "155 dari 191 iklan Romelle diarahkan ke listicle \"5 Alasan...\", bukan ke product page.",
+   "Copy offer Romelle selalu menyapa orang hangat: \"Udah masuk keranjang?\", \"Udah lama di wishlist tapi belum checkout?\"",
+   "Sutton Petit (17 Okt 2026) keluar sekaligus: \"You Asked, We Made It\", what's in my bag, day off, DCO ROMELLE50, dan LP \"5 Alasan Sutton Petit\"."],
+  ui:{cartIcon:"🛍️",cartTitle:"Masuk keranjang, belum checkout",cartScr:"1 item di keranjang",cartSub:"Belum checkout…",cartEvent:"Event: AddToCart",cartNote:"Hampir beli, tertahan: ongkir, timing gajian, atau pikir-pikir. Di sinilah BOFU bekerja.",doneTitle:"Pesanan berhasil",doneSub:"Terima kasih sudah belanja 🤎",loyalDefault:"Jadi bahan proof berikutnya",loyalHook:P=>`"Ini ${P} kedua aku."`,challenge:(P,mo)=>`Coba tebak, ${P} muat berapa barang buat ${mo}?`},
+  second:{h1:w=>`${w}, sini merapat. Ide kado yang beneran dipakai tiap hari.`,h2:P=>`"Udah bilang stop kasih kado, eh dia malah kasih ${P}."`,lp:"/pages/gift-page"},
+  notes:[["Demo value adalah senjata utama","Produk fisik yang visual menang lewat bukti di kamera. Kalau produk tidak bisa dibuktikan dalam 3 detik, perbaiki demonya dulu sebelum menambah budget."]],
+  kpi:"CPP, ROAS 7-hari, MER, AOV"
+ },
+ digital:{
+  label:"Produk digital / e-book", short:"Contoh ilustrasi (brand fiktif)", ref:"Kelas Laris",
+  secondIcon:"🏢",
+  bridge: divBridge("per hari",(v,p)=>`${v} per hari selama program. Lebih murah dari ${p}.`),
+  lbl:{produk:"Hero product (produk entry)",masa:"Durasi program / pemakaian (hari)",harga:"Harga jual (Rp)"},
+  help:{masa:"Harga ÷ durasi praktik = biaya per hari. Untuk template/aplikasi: jumlah hari dipakai."},
+  exNote:{alasan:"kalau belum tahu, tanya 10 pembeli terakhir sebelum menulis janji"},
+  ex:{brand:"Kelas Laris",produk:"E-book Laris di TikTok Shop",kategori:"e-book panduan jualan online",target:"pemula yang mau mulai jualan di TikTok Shop tapi belum tahu caranya",harga:"149000",masa:"30",pembanding:"segelas es kopi susu",alternatif:"kelas offline Rp2-5 juta, atau bakar uang iklan karena trial-error",kreatif:"20",tujuan:"Landing page pre-sell",alasan:"Belum tahu",
+   luar:"Ringkas",dalam:"langsung praktik",janji:"Ringkas dibaca, langsung dipraktikkan.",
+   b1:"Template script live, checklist harian, dan kalender konten 30 hari yang tinggal dipakai",b1ok:true,
+   b2:"Studi kasus nyata dengan screenshot dashboard (dengan izin pemiliknya)",b2ok:true,
+   b3:"Dipakai seller pemula yang serius mau jualan, bukan sekadar cari motivasi",b3ok:true,
+   sig:"Headline berupa angka/hasil + screenshot asli + tone kakak tingkat yang santai, emoji 📈",
+   persona:"Ibu rumah tangga yang mau punya penghasilan\nKaryawan yang cari side income\nMahasiswa\nPemilik UMKM offline\nReseller yang mau punya brand sendiri",
+   momen:"Malam setelah anak tidur\nJam istirahat kantor\nAwal bulan / gajian\nSebelum live pertama\nWeekend",
+   pain:"Sudah live berjam-jam tapi tidak ada pesanan\nInfo di YouTube terpotong-potong, bingung mulai dari mana\nTakut bakar uang iklan tanpa hasil",
+   oh:"\"Info begini kan gratis di YouTube\"",ohj:"Bedanya urutan dan template siap pakai: hemat berminggu-minggu trial-error. Rp5.000 per hari selama 30 hari praktik.",
+   ok:"\"Takut isinya dangkal atau cuma teori\"",okj:"Flip-through isi halaman di video + preview 1 bab gratis + garansi 7 hari uang kembali",
+   ot:"\"Takut scam, produk digital banyak yang abal-abal\"",otj:"Tunjukkan wajah penulis, rekam jejak tokonya sendiri, dan testimoni pembeli dengan nama asli",
+   compare:"E-book vs kelas rekaman vs mentoring 1-on-1 (pilih sesuai budget & waktu)",
+   gift:true,giftwho:"Owner bisnis yang membelikan untuk tim admin/CS",giftfear:"\"Tim saya bisa langsung praktik nggak?\" → lisensi tim + checklist SOP per peran",giftmoment:"Onboarding karyawan baru, awal kuartal, jelang Harbolnas",
+   pcreator:"10",preaksi:"\"Akhirnya ada order pertama!\" (screenshot chat pembeli)",pangka:"2.300+ pembeli, rating 4,8/5 dari 400 ulasan",psold:"Batch bonus webinar penuh dalam 3 hari",ployal:"Pembeli e-book lanjut ambil kelas rekaman",pkom:"\"Bikin versi Shopee dong\" → jadi produk berikutnya",pver:true,
+   lphasil:"Langkah Pertama Seller Pemula",lpsub:"Untuk kamu yang mau jualan dengan cara yang terarah, bukan tebak-tebakan",lpbar:"Akses instan · Garansi 7 hari uang kembali · Update gratis selamanya · 2.300+ pembeli",
+   r1:"Urutan 30 hari yang jelas, bukan kumpulan tips acak",r2:"15 template script live & caption tinggal pakai",r3:"Studi kasus nyata dengan angka, bukan teori",r4:"Bisa dibaca di HP dalam 2 jam",r5:"Checklist harian supaya konsisten",origin:"Ditulis dari pengalaman membangun toko sendiri dari nol order.",
+   kode:"LARIS30",nilai:"Potongan Rp30 ribu",bundling:"E-book + template Notion Rp199 ribu (vs Rp248 ribu terpisah)",risk:"Garansi 7 hari uang kembali, akses seumur hidup",scar:"Bonus webinar hanya untuk 100 pembeli pertama batch ini",scarok:true,
+   lnama:"E-book Laris di Shopee",ltgl:"Januari 2027",lbeda:"Versi khusus Shopee: iklan, voucher, dan live Shopee",lasal:"Ya — \"bikin versi Shopee dong\""},
+  demos:["Scroll cepat 120 halaman: bab, template, checklist muncul satu per satu","\"15 template\" dibuka satu-satu dan langsung dicopy ke HP","Script live yang tinggal dibaca, dipraktikkan langsung di depan kamera","Pembeli menunjukkan dashboard hari ke-1 vs hari ke-30 (dengan izin)","Zoom satu halaman checklist harian sampai kebaca jelas","Live sepi tanpa struktur → live pakai rundown dari e-book","E-book vs kelas vs mentoring: mana yang cocok buat kamu?"],
+  why:["Hero produk digital = satu produk entry (e-book/template terjangkau) yang membuka jalan ke kelas atau mentoring. Jangan iklankan semua produk sekaligus.",
+   "Produk digital tidak bisa dipegang, jadi bukti harus visual: isi halaman, template yang dipakai, hasil pembeli. Janji tanpa bukti terdengar seperti scam.",
+   "Persona produk digital lebih banyak dibedakan oleh situasi hidup dan waktu luang, bukan usia.",
+   "Keberatan terbesar produk digital: \"gratis di YouTube\" dan \"takut scam\". Masing-masing butuh iklan dan halamannya sendiri.",
+   "Demo produk digital = screen recording dan hasil nyata. Wajah penulis yang menjelaskan lebih kuat dari animasi.",
+   "Testimoni screenshot chat + hasil pembeli adalah proof utama. Pastikan ada izin dan jangan potong konteksnya.",
+   "LP pre-sell sangat penting untuk produk digital karena pembeli perlu \"mencicipi\" isi sebelum bayar.",
+   "Offer produk digital paling kuat lewat bundling dan bonus, bukan potongan harga terus-menerus.",
+   "Produk digital berikutnya paling baik lahir dari pertanyaan pembeli produk pertama."],
+  ui:{cartIcon:"🧾",cartTitle:"Buka checkout, belum bayar",cartScr:"Checkout belum dibayar",cartSub:"Menunggu pembayaran…",cartEvent:"Event: InitiateCheckout",cartNote:"Sudah isi data, tertahan di pembayaran: ragu, nunggu gajian, atau masih takut produk digital. Di sinilah BOFU bekerja.",doneTitle:"Pembayaran berhasil",doneSub:"Link akses terkirim ke email",loyalDefault:"Naik ke produk berikutnya",loyalHook:()=>`"Sudah praktik 30 hari? Ini langkah berikutnya."`,challenge:P=>`Coba tebak, berapa hari sampai order pertama pakai ${P}?`},
+  second:{h1:()=>`Owner, tim admin kamu masih trial-error? Ini SOP siap pakai.`,h2:()=>`"Tim CS saya langsung pakai template-nya besoknya."`,lp:"/pages/lisensi-tim"},
+  notes:[["Produk digital = masalah kepercayaan","Wajah penulis dan bukti hasil pembeli lebih penting dari desain cover. Tanpa itu, iklan sebagus apa pun dibaca sebagai scam."],["Jangan jual janji penghasilan","Klaim \"pasti untung\" atau angka penghasilan berisiko ditolak Meta dan merusak kepercayaan. Tunjukkan proses dan hasil nyata dengan izin, bukan janji angka."]],
+  kpi:"CPA, AOV setelah bump/upsell, refund rate, % pembeli yang lanjut ke produk berikutnya"
+ },
+ fmcg:{
+  label:"FMCG / makanan & minuman", short:"Contoh ilustrasi (brand fiktif)", ref:"Dapur Nara",
+  secondIcon:"🎁",
+  bridge: divBridge("per sajian",(v,p)=>`${v} per sajian. Lebih murah dari ${p}.`),
+  lbl:{masa:"Jumlah sajian / pemakaian per kemasan"},
+  help:{masa:"Harga ÷ jumlah sajian = biaya per sajian."},
+  exNote:{tujuan:"FMCG harga rendah wajar langsung ke marketplace, tapi halaman tokonya harus ikut \"menjual\""},
+  ex:{brand:"Dapur Nara",produk:"Sambal Bawang Nara 150 gr",kategori:"sambal botol siap makan",target:"orang yang suka makan pedas tapi tidak sempat bikin sambal",harga:"35000",masa:"12",pembanding:"sebungkus kerupuk",alternatif:"ulek sendiri 30 menit, atau beli lauk di luar",kreatif:"24",tujuan:"Marketplace (Shopee/Tokopedia/TikTok Shop)",alasan:"Value / fitur produk",
+   luar:"Sederhana",dalam:"nendang",janji:"Sederhana di botol, nendang di lidah.",
+   b1:"Tinggal sendok: nasi, mie, telur langsung naik level dalam 5 detik",b1ok:true,
+   b2:"Close-up minyak, potongan bawang dan cabai yang padat (bukan encer)",b2ok:true,
+   b3:"Rasa rumahan yang bikin kangen masakan ibu",b3ok:true,
+   sig:"Headline pendek ala obrolan dapur + close-up makanan + suara kriuk (ASMR), emoji 🌶️",
+   persona:"Anak kos\nIbu rumah tangga\nPekerja kantoran bawa bekal\nPerantau yang kangen masakan rumah\nPecinta pedas level dewa",
+   momen:"Makan malam serba cepat\nBekal kantor\nMie instan tengah malam\nPiknik / perjalanan jauh\nHampers Lebaran",
+   pain:"Bikin sambal sendiri ribet dan dapur jadi bau\nLauk seadanya terasa hambar\nSambal pabrikan kemanisan atau keasaman",
+   oh:"\"Rp35 ribu buat sambal? Di supermarket Rp15 ribu\"",ohj:"Isi lebih padat bawang & cabai asli: 12 sajian = Rp2.900 per makan",
+   ok:"\"Belum pernah coba, takut rasanya nggak cocok\"",okj:"Video reaksi rasa dari banyak creator + paket mini untuk coba",
+   ot:"\"Aman nggak? Ada izin edar dan halal?\"",otj:"Tampilkan nomor izin edar (PIRT/BPOM) & sertifikat halal di video dan foto produk",
+   compare:"Original vs Extra Pedas vs Cumi (pilih level & lauk)",
+   gift:true,giftwho:"Perusahaan / orang yang cari hampers",giftfear:"\"Aman dikirim jauh? Takut pecah\" → packing bubble + garansi ganti kalau pecah",giftmoment:"Lebaran, Natal, Imlek, ulang tahun kantor",
+   pcreator:"25",preaksi:"\"Gila, nasi sebakul habis\" / reaksi kepedasan asli",pangka:"50.000+ botol terjual, rating 4,9 di marketplace",psold:"Varian cumi habis dalam 4 hari",ployal:"\"Ini botol ke-6 aku\", order paket isi 6",pkom:"\"Bikin yang lebih pedas dong\" → varian Extra Pedas",pver:true,
+   lphasil:"Teman Makan Wajib di Rumah",lpsub:"Untuk kamu yang mau makan enak tanpa ribet",lpbar:"Gratis ongkir · Garansi pecah ganti baru · Halal & izin edar · 50.000+ terjual",
+   r1:"Bawang & cabai asli yang padat, bukan encer",r2:"Tinggal sendok, tanpa masak",r3:"Satu botol = 12 kali makan",r4:"Cocok untuk nasi, mie, gorengan, sampai bumbu tumis",r5:"Kemasan aman dikirim ke seluruh Indonesia",origin:"Resep keluarga yang dulu cuma dibuat untuk acara di rumah.",
+   kode:"NARA10",nilai:"Diskon 10% min. 2 botol",bundling:"Paket 3 varian Rp95 ribu (vs Rp105 ribu satuan)",risk:"Garansi pecah ganti baru, gratis ongkir",scar:"Produksi batch kecil, stok varian cumi terbatas per minggu",scarok:true,
+   lnama:"Sambal Cumi Nara",ltgl:"Februari 2027",lbeda:"Varian dengan cumi asin, sambal sekaligus lauk",lasal:"Ya — \"bikin yang ada lauknya dong\""},
+  demos:["Satu sendok dituang ke nasi, mie, telur: tiga kali, tiga reaksi","Level pedas 1-5 diuji, reaksi creator jadi buktinya","Dipakai jadi bumbu tumis kangkung dalam 2 menit","Botol yang dibuka 2 minggu lalu masih harum (sesuai klaim di label)","Close-up minyak menetes, tekstur bawang goreng, suara kriuk","Mie instan polos → pakai sambal, sebelum vs sesudah","Original vs Extra Pedas vs Cumi: cocok buat lauk apa?"],
+  why:["Untuk FMCG, pilih varian terlaris atau yang paling menggugah di kamera sebagai hero. Varian lain masuk lewat iklan compare.",
+   "Di FMCG, bukti paling kuat adalah rasa/hasil yang terlihat: tekstur, reaksi, sebelum-sesudah.",
+   "Momen konsumsi (bekal, tengah malam, hampers) sering lebih menentukan daripada persona.",
+   "Keberatan FMCG biasanya: lebih mahal dari merek supermarket, rasa belum pernah dicoba, dan keamanan (izin edar/halal).",
+   "Demo FMCG: taste test, close-up tekstur, reaksi asli. Suara (kriuk, sizzle) sama pentingnya dengan visual.",
+   "Volume creator dan reaksi rasa yang beragam adalah proof terkuat FMCG.",
+   "Kalau traffic ke marketplace, terapkan struktur \"5 alasan\" di foto produk dan deskripsi toko.",
+   "Offer FMCG terbaik untuk menaikkan AOV (bundling, beli 3), bukan menurunkan harga satuan.",
+   "Varian baru FMCG ideal dari permintaan di komentar: level pedas, rasa baru, ukuran baru."],
+  ui:{cartIcon:"🛒",cartTitle:"Masuk keranjang marketplace",cartScr:"1 item di keranjang",cartSub:"Belum checkout…",cartEvent:"Event: AddToCart (marketplace)",cartNote:"Hampir beli, tertahan karena ongkir atau menunggu promo tanggal kembar. Di sinilah BOFU bekerja.",doneTitle:"Pesanan dikemas",doneSub:"Siap dikirim hari ini",loyalDefault:"Repeat order",loyalHook:()=>`"Botol pertama udah habis? Paket isi 3 lebih hemat."`,challenge:P=>`Tantangan: mie instan polos vs pakai ${P}, beda nggak?`},
+  second:{h1:()=>`Cari hampers yang nggak cuma dipajang? Ini yang habis duluan.`,h2:()=>`"Klien kantor minta order ulang buat Lebaran."`,lp:"/pages/hampers-korporat"},
+  notes:[["Harga rendah = keputusan impulsif","Fokus ke stop-scroll dan taste appeal. MOFU lebih pendek; BOFU dipakai untuk bundling yang menaikkan AOV."],["Repeat order adalah profit FMCG","Siapkan jalur retensi (paket isi ulang, WA broadcast, langganan) sejak awal, bukan setelah iklan jalan."]],
+  kpi:"CPP, AOV, ROAS marketplace, repeat purchase rate 60-90 hari"
+ },
+ ekspedisi:{
+  label:"Jasa ekspedisi / import", short:"Contoh ilustrasi (brand fiktif)", ref:"JalurNaga Cargo", leadBased:true,
+  secondIcon:"🏢",
+  bridge: divBridge("per pcs",(v,p)=>`Ongkir cuma ${v} per pcs. Lebih murah dari ${p}.`),
+  lbl:{produk:"Layanan utama",harga:"Tarif per kg (Rp)",masa:"Rata-rata pcs per kg barang pelanggan",kategori:"Jenis jasa (bahasa awam)"},
+  help:{masa:"Tarif per kg ÷ pcs per kg = ongkir per pcs. Seller berpikir per pcs, bukan per kg."},
+  exNote:{alasan:"kalau jawabannya harga termurah, kamu akan selalu kalah perang tarif — geser ke kepastian & transparansi",kode:"tidak pakai kode diskon; offer jasa lebih kuat lewat risk reversal",nilai:"tidak dipakai"},
+  ex:{brand:"JalurNaga Cargo",produk:"Import China–Indonesia door to door (jalur laut)",kategori:"jasa import & ekspedisi dari China",target:"seller online dan pemilik usaha yang ambil barang dari supplier China",harga:"12000",masa:"10",pembanding:"plastik packingnya",alternatif:"jasa titip atau udara reguler Rp80-100 ribu per kg",kreatif:"12",tujuan:"WhatsApp",alasan:"Harga paling murah",
+   luar:"Simpel",dalam:"jelas sampai tujuan",janji:"Simpel di tarif, jelas di setiap perjalanan.",
+   b1:"Tracking tiap tahap (gudang China → kapal → bea cukai → gudang Jakarta → pintu) dengan foto",b1ok:true,
+   b2:"Barang ditimbang & difoto saat masuk gudang dan saat tiba; packing ulang kalau perlu",b2ok:true,
+   b3:"Dipakai seller dan brand yang rutin import tiap bulan",b3ok:true,
+   sig:"Headline berupa angka (kg, hari, Rp/pcs) + footage gudang asli + tone to the point, emoji 📦",
+   persona:"Seller online pemula yang mau import\nPemilik toko grosir\nBrand lokal yang produksi di China\nPengusaha F&B yang beli alat/mesin\nDropshipper yang mau stok sendiri",
+   momen:"Restock jelang 11.11/12.12\nJelang Lebaran (cut-off kapal)\nLaunching produk baru\nBarang tertahan di forwarder lain\nOrder sampel pertama",
+   pain:"Barang nyangkut berminggu-minggu tanpa kabar\nBiaya tiba-tiba bertambah di tengah jalan\nRibet urus bea cukai sendiri",
+   oh:"\"Kok lebih mahal dari forwarder sebelah?\"",ohj:"Tarif all-in sudah termasuk bea & pajak, tanpa biaya kejutan. Hitung per pcs, bukan per kg.",
+   ok:"\"Takut barang rusak atau hilang\"",okj:"Foto saat timbang & saat tiba, packing ulang, dan kebijakan ganti rugi tertulis (tampilkan kalau memang ada)",
+   ot:"\"Takut ditahan bea cukai atau dibawa kabur\"",otj:"Kantor & gudang yang bisa dikunjungi, legalitas perusahaan, testimoni seller dengan nama toko asli",
+   compare:"Jalur laut vs udara vs express (biaya vs kecepatan)",
+   gift:true,giftwho:"Staf purchasing / admin perusahaan",giftfear:"\"Laporannya rapi nggak buat atasan?\" → invoice resmi, faktur pajak, rekap bulanan",giftmoment:"Tutup buku bulanan, perencanaan budget tahunan, seleksi vendor",
+   pcreator:"8",preaksi:"\"Barangnya utuh, packingnya malah lebih rapi dari supplier\"",pangka:"1.200+ seller, 300 ton terkirim per tahun",psold:"Slot kontainer jelang Lebaran penuh 2 minggu sebelum cut-off",ployal:"\"Ini kiriman ke-25 saya\"",pkom:"\"Bisa dari Yiwu juga?\" → rute baru",pver:true,
+   lphasil:"Pilihan Seller yang Capek Ditipu Forwarder",lpsub:"Untuk kamu yang butuh kepastian, bukan sekadar tarif murah",lpbar:"Tarif all-in · Tracking tiap tahap · Gudang bisa dikunjungi · 1.200+ seller",
+   r1:"Tarif all-in, tidak ada biaya kejutan",r2:"Tracking dan foto di setiap tahap",r3:"Konsolidasi banyak supplier jadi satu kiriman",r4:"Bea cukai diurus sampai beres",r5:"Admin yang membalas cepat, bukan bot",origin:"Berawal dari pengalaman sendiri ditipu forwarder saat pertama kali import.",
+   kode:"",nilai:"",bundling:"Gratis cek & foto barang di gudang supplier untuk kiriman pertama",risk:"Gratis pickup area Jakarta, ganti rugi tertulis",scar:"Cut-off kapal terakhir sebelum Lebaran (tanggal resmi)",scarok:true,
+   lnama:"Express Udara 5-7 hari",ltgl:"Maret 2027",lbeda:"Untuk barang mendesak dan sampel",lasal:"Ya — banyak yang tanya \"ada yang lebih cepat?\""},
+  demos:["Timelapse satu kiriman: dari gudang Guangzhou sampai diterima di pintu pelanggan","Timbang & ukur CBM di depan kamera, angkanya langsung jadi tagihan","Konsolidasi: barang dari 5 supplier digabung jadi satu kiriman","Bukti tanggal: barang masuk gudang 1 Okt, tiba 22 Okt","Close-up kondisi packing saat tiba, dibuka di depan pelanggan","Dulu urus sendiri (supplier, bea cukai, kurir) vs sekarang satu kontak","Laut vs udara vs express: kapan pakai yang mana"],
+  why:["Untuk jasa, hero = satu layanan/rute yang paling sering dicari, bukan semua layanan sekaligus.",
+   "Jasa tidak bisa dipegang, jadi buktinya berupa proses yang terlihat: gudang, timbangan, tracking, kondisi barang saat tiba.",
+   "Persona jasa ekspedisi dibedakan oleh skala usaha dan momen bisnis (restock, cut-off, launching).",
+   "Keberatan utama ekspedisi: biaya kejutan, barang rusak/hilang, dan takut ditahan. Masing-masing jadi satu iklan MOFU.",
+   "Demo jasa = rekam prosesnya. Footage gudang asli mengalahkan desain grafis apa pun.",
+   "Proof by loyalitas (\"kiriman ke-25\") dan nama toko asli sangat kuat untuk pembeli B2B.",
+   "Untuk jasa berbasis WhatsApp, LP pre-sell tetap berguna sebagai penyaring sebelum chat. Ukur kualitas lead, bukan jumlah chat.",
+   "Jasa jarang cocok dengan kode diskon. Offer terbaik: risk reversal (pickup gratis, cek barang gratis, ganti rugi tertulis).",
+   "Layanan/rute baru paling baik lahir dari pertanyaan yang berulang di chat."],
+  ui:{cartIcon:"💬",cartTitle:"Chat WhatsApp, minta hitung ongkir",cartScr:"Chat WhatsApp",cartSub:"\"Kak, kirim 50 kg dari Guangzhou berapa?\"",cartEvent:"Event: Contact / Lead",cartNote:"Sudah minta quotation, tapi masih membandingkan dengan forwarder lain. Kecepatan balas admin dan BOFU yang menentukan.",doneTitle:"Barang di-pickup",doneSub:"Resi & tracking dikirim ke WhatsApp",loyalDefault:"Kiriman berikutnya",loyalHook:()=>`"Restock bulan depan? Slot kontainer sudah dibuka."`,challenge:P=>`Coba tebak, kirim 100 kg dari Guangzhou pakai ${P} habis berapa?`,bofuFallback:"Masih nunggu quotation? Kirim packing list, kami hitung dalam 15 menit."},
+  second:{h1:()=>`Purchasing, capek kejar forwarder buat laporan bulanan?`,h2:()=>`"Invoice rapi, tracking tiap tahap, atasan nggak nanya lagi."`,lp:"/pages/b2b-corporate"},
+  notes:[["Iklan hanya separuh pekerjaan","Untuk jasa berbasis lead, balas WhatsApp dalam 5 menit dan pakai template quotation yang membawa janji inti yang sama dengan iklan."],["Jangan perang tarif","Kalau semua iklan bicara \"termurah\", kamu menarik pelanggan yang akan pindah demi selisih Rp500/kg."]],
+  kpi:"Cost per lead, lead-to-closing rate, kg per pelanggan per bulan, repeat shipment rate"
+ },
+ emas:{
+  label:"Pusat emas / jual-beli emas", short:"Contoh ilustrasi (brand fiktif)", ref:"Emas Amanah", leadBased:true,
+  secondIcon:"👨‍👩‍👧",
+  bridge:(d)=>{
+    const h=parseFloat(d.harga)||0,a=parseFloat(d.hargaAlt)||0,g=parseFloat(d.masa)||0;
+    if(!h||!a||!g) return {ok:false};
+    const tot=(h-a)*g;
+    if(tot<=0) return {ok:true,short:"selisih belum positif",calc:"Harga kamu belum di atas alternatif — jembatan harga diganti ke transparansi (rincian potongan tertulis).",text:"Harga hari ini diumumkan terbuka, rincian potongan tertulis di nota."};
+    return {ok:true,short:`${rp(tot)} lebih banyak per ${g} gram`,calc:`(${rp(h)} − ${rp(a)}) × ${g} gram = <b>${rp(tot)} lebih banyak</b>`,text:`Jual ${g} gram di sini = ${rp(tot)} lebih banyak dibanding ${or(d.alternatif,"tempat lain")}. Setara ${or(d.pembanding,"belanja seminggu")}.`};
+  },
+  lbl:{produk:"Layanan utama",kategori:"Jenis usaha (bahasa awam)",harga:"Harga beli (buyback) kamu per gram (Rp)",masa:"Contoh berat transaksi (gram)",pembanding:"Selisihnya setara dengan (pengeluaran familiar)",alternatif:"Alternatif pembanding"},
+  help:{harga:"Pakai angka harian yang benar-benar kamu pasang di toko.",masa:"Selisih per gram × berat contoh = tambahan uang yang diterima pelanggan."},
+  exNote:{kode:"bisnis kepercayaan tidak cocok dengan kode diskon",nilai:"tidak dipakai"},
+  ex:{brand:"Emas Amanah",produk:"Buyback emas perhiasan (dengan atau tanpa surat)",kategori:"jasa jual-beli emas",target:"orang yang mau menjual emas dan takut dipotong besar atau dicurangi",harga:"1350000",hargaAlt:"1300000",masa:"10",pembanding:"belanja dapur seminggu",alternatif:"toko emas yang potongannya besar",kreatif:"12",tujuan:"WhatsApp",alasan:"Value / fitur produk",
+   luar:"Transparan",dalam:"harga terbaik",janji:"Timbang di depan mata, harga di atas rata-rata.",
+   b1:"Timbang dan tes kadar di depan pelanggan, angkanya kelihatan di layar",b1ok:true,
+   b2:"Alat uji kadar (XRF) dan timbangan terkalibrasi, di-close-up",b2ok:true,
+   b3:"Tempat yang dipercaya keluarga turun-temurun, proses privat dan sopan",b3ok:true,
+   sig:"Headline berupa harga hari ini + footage timbangan asli + tone tenang dan sopan, tanpa kesan mengejar orang yang butuh uang",
+   persona:"Ibu rumah tangga\nPensiunan\nPewaris perhiasan lama keluarga\nPengusaha yang butuh tambahan modal\nAnak yang membantu orang tua menjual emas",
+   momen:"Tahun ajaran baru\nJelang Lebaran\nHarga emas sedang naik\nPerhiasan rusak / putus\nBeres-beres lemari / pindah rumah",
+   pain:"Takut dipotong besar karena tidak ada surat\nBingung harga emas hari ini berapa\nTakut timbangan atau kadarnya dicurangi",
+   oh:"\"Pasti dipotong besar\"",ohj:"Harga buyback diumumkan setiap hari dan rincian potongan tertulis di nota",
+   ok:"\"Takut timbangan atau kadarnya dicurangi\"",okj:"Timbang & tes kadar di depan pelanggan, boleh direkam",
+   ot:"\"Aman nggak bawa emas ke sana?\"",otj:"Toko resmi dengan alamat jelas, CCTV, ruang transaksi privat, ulasan Google Maps asli",
+   compare:"Jual vs gadai vs tukar tambah: mana yang pas untuk kebutuhanmu",
+   gift:true,giftwho:"Anak yang membantu orang tua menjual emas",giftfear:"\"Takut orang tua dibohongi\" → proses transparan, boleh didampingi atau video call",giftmoment:"Tahun ajaran baru, jelang Lebaran, setelah pembagian warisan",
+   pcreator:"6",preaksi:"\"Ternyata dapatnya lebih besar dari perkiraan\"",pangka:"Rating 4,9 dari 800+ ulasan Google Maps",psold:"Antrean penuh setiap harga emas naik",ployal:"\"Sudah langganan jual-beli di sini sejak 2015\"",pkom:"\"Bisa jemput ke rumah?\" → layanan kunjungan",pver:true,
+   lphasil:"Tempat Paling Tenang untuk Menjual Emas",lpsub:"Untuk kamu yang ingin harga jelas dan proses yang jujur",lpbar:"Harga harian diumumkan · Timbang di depan mata · Tanpa surat diterima · 800+ ulasan",
+   r1:"Harga buyback diumumkan setiap hari",r2:"Timbang & tes kadar di depan kamu",r3:"Perhiasan tanpa surat atau rusak tetap diterima",r4:"Uang cair dalam hitungan menit",r5:"Ruang transaksi privat dan aman",origin:"Usaha keluarga yang menjaga kepercayaan pelanggan sejak generasi pertama.",
+   kode:"",nilai:"",bundling:"Gratis cek kadar & cuci perhiasan, tanpa kewajiban jual",risk:"Boleh batal setelah tahu harga, tanpa biaya",scar:"Harga emas naik hari ini (sesuai harga harian resmi)",scarok:true,
+   lnama:"Layanan Jemput ke Rumah",ltgl:"April 2027",lbeda:"Petugas datang, timbang & tes di rumah pelanggan",lasal:"Ya — \"bisa jemput ke rumah?\""},
+  demos:["Live timbang: perhiasan ditaruh, angka gram muncul di layar","Tes kadar XRF: hasil 75% / 18K muncul di layar dan dijelaskan artinya","Perhiasan putus, bengkok, tanpa surat tetap diterima","Timer: dari datang sampai uang cair 15 menit","Close-up angka timbangan dan hasil tes kadar","Nota tempat lain vs nota di sini untuk berat yang sama (dengan izin pelanggan)","Jual vs gadai vs tukar tambah: kapan pilih yang mana"],
+  why:["Untuk pusat emas, hero = satu layanan dengan kebutuhan paling besar (misalnya buyback tanpa surat), bukan daftar semua layanan.",
+   "Bisnis emas adalah bisnis kepercayaan. Bukti terbaik: proses timbang dan tes kadar yang terlihat jelas.",
+   "Persona emas dibedakan oleh momen hidup (biaya sekolah, Lebaran, warisan) dan siapa yang mendampingi.",
+   "Keberatan utama: dipotong besar, dicurangi, dan rasa aman. Jawab dengan transparansi, bukan bujukan.",
+   "Demo emas = angka timbangan dan hasil kadar di layar. Itu yang paling ingin dilihat calon penjual.",
+   "Ulasan Google Maps dan pelanggan lama adalah proof paling kuat untuk bisnis lokal berbasis kepercayaan.",
+   "LP atau halaman \"harga hari ini\" membantu orang datang dengan ekspektasi yang benar.",
+   "Offer emas sebaiknya berupa risk reversal (cek gratis, boleh batal), bukan diskon atau tekanan waktu.",
+   "Layanan baru (jemput ke rumah, cabang baru) paling baik lahir dari pertanyaan pelanggan."],
+  ui:{cartIcon:"💬",cartTitle:"Chat WhatsApp, tanya harga hari ini",cartScr:"Chat WhatsApp",cartSub:"\"Cincin 5 gram tanpa surat, laku berapa?\"",cartEvent:"Event: Contact / Lead",cartNote:"Sudah tanya harga, masih ragu datang. Jawaban yang cepat dan sopan + BOFU yang menenangkan menentukan.",doneTitle:"Transaksi selesai di toko",doneSub:"Nota rinci diberikan",loyalDefault:"Kembali saat butuh",loyalHook:()=>`"Harga emas sedang naik. Cek nilai perhiasanmu, gratis."`,challenge:()=>`Coba tebak, cincin 5 gram ini laku berapa hari ini?`,bofuFallback:"Harga buyback hari ini sudah keluar. Cek kadar gratis, boleh batal."},
+  second:{h1:()=>`Mau bantu orang tua jual emas lama tanpa takut dibohongi?`,h2:()=>`"Ibu saya didampingi lewat video call, prosesnya jelas."`,lp:"/pages/dampingi-orang-tua"},
+  notes:[["Jangan menekan orang yang butuh uang","Urgency agresif di kategori ini merusak kepercayaan dan rawan dilaporkan. Nada tenang dan transparan justru jadi pembeda."],["Harga harian adalah konten","Satu format rutin \"harga buyback hari ini\" bisa jadi jangkar BOFU yang selalu relevan dan murah diproduksi."]],
+  kpi:"Cost per lead, lead-to-visit rate, gram terbeli per hari, margin per gram (bukan jumlah chat)"
+ }
+};
+
+
+/* ---------- BASE STRUCTURE ---------- */
+const BASE_DEMOS=[["Fill test / tunjukkan isi","Tunjukkan kapasitas, isi, atau hasil secara literal, satu per satu"],["Spesifikasi jadi adegan","Angka spesifikasi harus diperagakan"],["Fitur \"aha\"","Satu kejutan per video"],["Uji waktu / hasil setelah dipakai","Bukti setelah dipakai lama, bukan baru unboxing"],["Close-up detail","Pengganti \"pegang langsung\" untuk belanja online"],["Before-after rutinitas","Visualkan masalahnya dulu, baru solusinya"],["Panduan pilih","Bantu memilih = kurangi keraguan"]];
+const STEPS = [
+ {id:"s0",t:"Hero product & kondisi sekarang",d:"Mulai dari SATU produk/layanan yang paling mudah dibuktikan manfaatnya di kamera. Yang lain masuk lewat pintu compare belakangan.",f:[
+  {id:"brand",l:"Nama brand"},{id:"produk",l:"Hero product"},{id:"kategori",l:"Kategori produk (bahasa awam)"},{id:"target",l:"Pemakai / pembeli utama (1 kalimat)"},
+  {id:"harga",l:"Harga jual (Rp)",type:"number"},{id:"hargaAlt",l:"Harga alternatif (Rp)",type:"number",only:["emas"]},
+  {id:"masa",l:"Pembagi jembatan harga",type:"number"},{id:"pembanding",l:"Pengeluaran kecil yang familiar"},{id:"alternatif",l:"Alternatif yang lebih mahal / lebih ribet"},
+  {id:"kreatif",l:"Kapasitas produksi kreatif baru per bulan",type:"number"},
+  {id:"tujuan",l:"Traffic iklan sekarang diarahkan ke mana?",type:"select",opts:["","Product page","Marketplace (Shopee/Tokopedia/TikTok Shop)","WhatsApp","Kunjungan toko / Google Maps","Landing page pre-sell","Campuran"]},
+  {id:"alasan",l:"Alasan utama orang beli saat ini?",type:"select",opts:["","Value / fitur produk","Diskon / promo","Harga paling murah","Belum tahu"]}]},
+ {id:"s1",t:"Janji Inti + 3 Bukti + Jembatan Harga",d:"Satu janji (maks 8 kata) yang diulang di SETIAP iklan dan SETIAP halaman. Lalu tiga bukti yang bisa diperagakan.",f:[
+  {id:"luar",l:"Kesan dari luar (1-2 kata)"},{id:"dalam",l:"Manfaat utama yang dirasakan (1-3 kata)"},
+  {id:"janji",l:"Janji inti final",help:"Kosongkan untuk pakai template \"[kesan] di luar, [manfaat] di dalam\". Untuk jasa, tulis bebas."},
+  {id:"b1",l:"Bukti 1 — Fungsi / proses yang bisa diperagakan",type:"textarea"},{id:"b1ok",l:"Bukti 1 bisa jadi adegan 3 detik",type:"check"},
+  {id:"b2",l:"Bukti 2 — Kualitas yang bisa di-close-up",type:"textarea"},{id:"b2ok",l:"Bukti 2 bisa jadi adegan 3 detik",type:"check"},
+  {id:"b3",l:"Bukti 3 — Status / identitas / kepercayaan",type:"textarea"},{id:"b3ok",l:"Bukti 3 bisa jadi adegan 3 detik",type:"check"},
+  {id:"sig",l:"Signature konsistensi (struktur headline, tone, elemen visual)",type:"textarea",full:true}]},
+ {id:"s2",t:"Pintu masuk: Persona × Momen",d:"Satu baris satu item. Tiap kombinasi persona × momen = satu ide iklan. Janji dan bukti tetap sama, yang berubah hanya konteks dan hook.",f:[
+  {id:"persona",l:"Persona (maks 5, satu per baris)",type:"textarea",half:true},{id:"momen",l:"Momen pakai / momen beli (maks 5, satu per baris)",type:"textarea",half:true},
+  {id:"pain",l:"Pain harian yang bisa divisualkan (satu per baris)",type:"textarea",full:true}]},
+ {id:"s3",t:"Keberatan & pembeli kedua (MOFU)",d:"Tulis keraguan yang paling sering muncul dan jawabannya. Tiap keberatan nanti jadi 1 iklan MOFU + idealnya 1 halaman khusus.",f:[
+  {id:"oh",l:"Keberatan harga"},{id:"ohj",l:"Jawaban / bukti"},{id:"ok",l:"Keberatan kualitas / takut tidak sesuai"},{id:"okj",l:"Jawaban / bukti"},
+  {id:"ot",l:"Keberatan kepercayaan / brand"},{id:"otj",l:"Jawaban / bukti"},{id:"compare",l:"Varian / pilihan untuk iklan compare",full:true},
+  {id:"gift",l:"Ada pembeli kedua yang bukan pemakai? (kado, B2B, keluarga)",type:"check"},{id:"giftwho",l:"Siapa pembeli keduanya"},
+  {id:"giftfear",l:"Ketakutan mereka + penenangnya"},{id:"giftmoment",l:"Momen pembeli kedua untuk dirotasi",full:true}]},
+ {id:"s4",t:"Demo Library",d:"Centang demo yang bisa kamu buat dan tulis adegannya. Target minimal 6 dari 7.",demo:true},
+ {id:"s5",t:"Social proof berlapis",d:"Isi hanya yang FAKTUAL. Satu iklan cukup membawa 1-2 lapis, biarkan funnel yang menumpuknya.",f:[
+  {id:"pcreator",l:"Jumlah creator / pelanggan yang bisa direkam bulan ini",type:"number"},{id:"preaksi",l:"Reaksi khas pelanggan (kutipan nyata)"},
+  {id:"pangka",l:"Angka penjualan / rating"},{id:"psold",l:"Kejadian sold out / best seller / antrean"},{id:"ployal",l:"Bukti loyalitas / pembelian ulang"},
+  {id:"pkom",l:"Komentar / permintaan komunitas yang bisa dijawab"},{id:"pver",l:"Semua angka di atas punya data internal yang bisa dibuktikan",type:"check",full:true}]},
+ {id:"s6",t:"LP pre-sell \"5 Alasan\"",d:"Satu halaman pre-sell per hero product. Tiap alasan = 1 manfaat yang bisa dilihat + 1 kalimat bukti.",f:[
+  {id:"lphasil",l:"Hasil yang diinginkan persona (untuk headline)"},{id:"lpsub",l:"Subheadline persona"},{id:"lpbar",l:"Bar janji / risk reversal",full:true},
+  {id:"r1",l:"Alasan 1"},{id:"r2",l:"Alasan 2"},{id:"r3",l:"Alasan 3"},{id:"r4",l:"Alasan 4"},{id:"r5",l:"Alasan 5"},{id:"origin",l:"Kalimat origin brand",full:true}]},
+ {id:"s7",t:"Offer penutup (BOFU)",d:"Offer hanya untuk audiens yang sudah hangat. Offer menutup, bukan membuka.",f:[
+  {id:"kode",l:"Kode promo (kosongkan kalau tidak pakai)"},{id:"nilai",l:"Nilai promo"},{id:"bundling",l:"Bundling / bonus"},{id:"risk",l:"Risk reversal"},
+  {id:"scar",l:"Kejadian urgency yang BENAR terjadi"},{id:"scarok",l:"Urgency di atas faktual (bukan karangan)",type:"check"}]},
+ {id:"s8",t:"Launch Kit produk/layanan berikutnya",d:"Setiap produk/layanan baru keluar bersamaan dengan paket lengkap di hari yang sama. Kosongkan kalau belum ada rencana.",f:[
+  {id:"lnama",l:"Produk / varian / layanan baru"},{id:"ltgl",l:"Tanggal launch"},{id:"lbeda",l:"Bedanya dari hero product"},{id:"lasal",l:"Ide berasal dari komentar audiens?"}]}
+];
+
+/* ---------- STATE ---------- */
+const KEY="sjbp_worksheet_polos_v1";
+let CATK="fashion", CAT=CATS.fashion, STORE={};
+const form = $("#ws");
+function getData(){const d={};form.querySelectorAll("input,textarea,select").forEach(el=>{d[el.name]=el.type==="checkbox"?el.checked:el.value.trim()});return d}
+function setData(d){form.querySelectorAll("input,textarea,select").forEach(el=>{const v=d[el.name];if(el.type==="checkbox")el.checked=!!v;else el.value=v??""})}
+function save(){STORE[CATK]=getData();try{localStorage.setItem(KEY,JSON.stringify({cat:CATK,data:STORE}))}catch(e){}}
+function loadStore(){try{const v=JSON.parse(localStorage.getItem(KEY)||"null");if(v){STORE=v.data||{};CATK="fashion"}}catch(e){}CAT=CATS[CATK]}
+function exData(){const d={};STEPS.forEach(s=>{if(s.f)s.f.forEach(f=>{let v=CAT.ex[f.id];if(f.type==="select")v=f.opts.find(o=>o&&String(v||"").startsWith(o))||"";d[f.id]=v??""})});CAT.demos.forEach((ex,i)=>{d["d_"+(i+1)]=!!ex;d["dt_"+(i+1)]=ex});return d}
+
+/* ---------- RENDER FORM ---------- */
+function renderForm(){
+  const exLbl = CAT.real?`Contoh ${CAT.ref}:`:`Contoh ${CAT.ref} <span style="font-weight:400">(ilustrasi)</span>:`;
+  const whyLbl = `Contoh pola (${CAT.ref}):`;
+  let h="";
+  STEPS.forEach((s,i)=>{
+    h+=`<section class="step" id="${s.id}"><div class="step-head"><div class="num">${i}</div><div><h2>${s.t}</h2><p>${s.d}</p></div></div><div class="why"><b>${whyLbl}</b> ${CAT.why[i]}</div>`;
+    if(s.demo){
+      h+=`<div style="margin-top:10px">`;
+      BASE_DEMOS.forEach(([n,p],k)=>{const ex=CAT.demos[k],key=k+1;
+        h+=`<div class="demo-row"><div class="dname"><label class="chk" style="margin:0"><input type="checkbox" name="d_${key}"> ${n}</label><small>${p}</small></div>
+        <div class="field"><input type="text" name="dt_${key}" placeholder="Adegan untuk produk/layananmu..."><div class="ex"><b>${exLbl}</b> ${esc(ex)} <button type="button" class="use" data-t="dt_${key}" data-v="${esc(ex)}">pakai</button></div></div></div>`});
+      h+=`</div>`;
+    } else {
+      h+=`<div class="grid">`;
+      s.f.forEach(f=>{
+        if(f.only&&f.only.indexOf(CATK)<0) return;
+        const lbl=CAT.lbl[f.id]||f.l, help=CAT.help[f.id]||f.help, ex=CAT.ex[f.id], note=CAT.exNote[f.id];
+        const full=(f.full||(f.type==="textarea"&&!f.half))?" full":"";
+        if(f.type==="check"){h+=`<div class="field${f.full?" full":""}"><label class="chk"><input type="checkbox" name="${f.id}"> ${lbl}</label><div class="ex"><b>${exLbl}</b> ${ex?"Ya":"Tidak"}</div></div>`;return}
+        let input;
+        if(f.type==="textarea") input=`<textarea name="${f.id}"></textarea>`;
+        else if(f.type==="select") input=`<select name="${f.id}">${f.opts.map(o=>`<option value="${esc(o)}">${o||"— pilih —"}</option>`).join("")}</select>`;
+        else input=`<input type="${f.type||"text"}" name="${f.id}">`;
+        let exLine="";
+        if(ex) exLine=`<div class="ex"><b>${exLbl}</b> ${esc(ex).replace(/\n/g," · ")}${note?` — <i>${esc(note)}</i>`:""} ${f.type==="select"?"":`<button type="button" class="use" data-t="${f.id}" data-v="${esc(ex)}">pakai</button>`}</div>`;
+        else if(note) exLine=`<div class="ex"><b>${exLbl}</b> <i>${esc(note)}</i></div>`;
+        h+=`<div class="field${full}"><label class="lbl">${lbl}</label>${input}${help?`<div class="ex" style="border-color:var(--line)">${help}</div>`:""}${exLine}</div>`;
+      });
+      h+=`</div>`;
+    }
+    h+=`</section>`;
+  });
+  form.innerHTML=h;
+  $("#stepNav").innerHTML=STEPS.map((s,i)=>`<a href="#${s.id}">${i}. ${s.t.split(/[:&(]/)[0].trim()}</a>`).join("")+`<a href="#output" style="background:var(--accent);color:#fff">Output</a>`;
+  $("#btnDemo").textContent=`Isi contoh ${CAT.ref}`;
+}
+function switchCat(k){
+  if(k===CATK) return;
+  save(); CATK=k; CAT=CATS[k]; jP=0; jI=0;
+  renderForm(); setData(STORE[k]||{}); save(); progress(); build();
+  toast(`Kategori: ${CAT.label}`);
+}
+
+/* ---------- OUTPUT ---------- */
+function build(){
+  const d = getData();
+  const P = or(d.produk,"[Produk]"), B = or(d.brand,"[Brand]"), K = or(d.kategori,"produk");
+  const lead = !!CAT.leadBased;
+  const janji = d.janji || (d.luar&&d.dalam ? `${d.luar} di luar, ${d.dalam} di dalam.` : "");
+  const personas = lines(d.persona).slice(0,5), momens = lines(d.momen).slice(0,5), pains = lines(d.pain);
+  const demoKeys = BASE_DEMOS.map((_,i)=>i+1).filter(k=>d["d_"+k]);
+  const demoTxt = demoKeys.map(k=>d["dt_"+k]||BASE_DEMOS[k-1][0]);
+  const N = Math.max(parseInt(d.kreatif)||0,0);
+  const harga = parseFloat(d.harga)||0;
+  const BR = CAT.bridge(d);
+  const proofs = [d.b1,d.b2,d.b3].filter(Boolean);
+  const reasons = [d.r1,d.r2,d.r3,d.r4,d.r5].filter(Boolean);
+  const objs = [["harga",d.oh,d.ohj],["kualitas",d.ok,d.okj],["kepercayaan",d.ot,d.otj]].filter(o=>o[1]);
+  const hasOffer = !!(d.kode||d.bundling||d.risk);
+
+  const checks = [
+    [!!janji,"Janji inti satu kalimat sudah ditulis"],
+    [proofs.length===3 && d.b1ok&&d.b2ok&&d.b3ok,"Tiga bukti lengkap dan semuanya bisa jadi adegan 3 detik"],
+    [demoKeys.length>=6,`Demo library minimal 6 jenis (sekarang ${demoKeys.length})`],
+    [personas.length>=5&&momens.length>=3,`Minimal 5 persona × 3 momen (sekarang ${personas.length} × ${momens.length})`],
+    [d.tujuan==="Landing page pre-sell" || reasons.length>=5, lead?"Ada halaman pre-sell sebelum chat (menyaring lead)":"Ada halaman pre-sell per produk (bukan semua traffic ke product page)"],
+    [objs.filter(o=>o[2]).length>=2,"Minimal 2 keberatan sudah punya jawaban (bahan halaman keberatan)"],
+    [d.gift ? !!(d.giftwho&&d.giftfear) : true, d.gift?"Jalur pembeli kedua sudah dipetakan":"Jalur pembeli kedua: tidak relevan (dilewati)"],
+    [d.alasan!=="Diskon / promo" && d.alasan!=="Harga paling murah" && hasOffer,"Offer hanya jadi penutup, bukan alasan utama beli"],
+    [!!d.pver && !!(d.pangka||d.psold||d.preaksi),"Semua klaim angka punya sumber nyata"],
+    [!!d.sig,"Signature konsistensi (headline, tone, elemen visual) ditetapkan"],
+  ];
+  const score = Math.round(checks.filter(c=>c[0]).length/checks.length*100);
+  const ringColor = score>=80?"var(--bofu)":score>=50?"var(--accent-2)":"var(--warn)";
+  const t = Math.round(N*0.58), m = Math.round(N*0.25), b = Math.max(N-t-m,0);
+
+  const hookTypes = ["Pain","POV","Pola terbalik","Tantangan","Cerita personal"];
+  const lc = s=>s.charAt(0).toLowerCase()+s.slice(1);
+  function hook(type,per,mom,i){
+    const pain = pains.length? pains[i%pains.length] : "ribet tiap hari";
+    switch(type){
+      case "Pain": return `Pernah nggak sih ${lc(pain)}?`;
+      case "POV": return `POV: ${lc(per)} akhirnya nemu ${K} yang ${lc(d.dalam||"beneran beda")} buat ${lc(mom)}.`;
+      case "Pola terbalik": return `Kelihatannya ${K} biasa. Coba lihat pas ${lc(mom)}.`;
+      case "Tantangan": return CAT.ui.challenge(P,lc(mom));
+      default: return `Sehari jadi ${lc(per)}: ${lc(mom)} bareng ${P}.`;
+    }
+  }
+  const cells=[];
+  personas.forEach((p,pi)=>momens.forEach((mo,mi)=>{const i=pi*momens.length+mi,ht=hookTypes[(pi+mi)%5];cells.push({p,mo,ht,h:hook(ht,p,mo,i),demo:demoTxt.length?demoTxt[i%demoTxt.length]:"[pilih demo di Langkah 4]"})}));
+  const slug = s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const lpMain = `/pages/5-alasan-${slug(P)}`;
+  const mp = (d.tujuan||"").startsWith("Marketplace");
+  const tofuDest = mp ? `Toko marketplace (terapkan "5 alasan" di foto & deskripsi) atau ${lpMain}` : lead ? `${lpMain} → tombol WhatsApp dengan pesan pembuka terisi` : `${lpMain} (listicle pre-sell)`;
+
+  const tofu=[];
+  cells.slice(0,Math.max(t,0)).forEach(c=>tofu.push(`<span class="tag">${c.ht}</span><b>${esc(c.p)} × ${esc(c.mo)}</b> — "${esc(c.h)}" <span class="dest">Demo: ${esc(c.demo)}</span>`));
+  pains.forEach(pn=>{if(tofu.length<t+2) tofu.push(`<span class="tag">Problem-led</span>Visualkan "${esc(pn)}" dulu, lalu ${esc(P)} sebagai jalan keluar.`)});
+  if(tofu.length<t) tofu.push(`<span class="tag">Creator-native</span>Caption asli creator/pelanggan (tanpa headline brand), format day in the life / behind the scenes.`);
+
+  const mofu=[];
+  objs.forEach(([k,q,a])=>mofu.push(`<span class="tag">Objection ${k}</span>Hook: ${esc(q)} → Jawab: ${esc(a||"[isi jawaban di Langkah 3]")}`));
+  if(BR.ok) mofu.push(`<span class="tag">Jembatan harga</span>"${esc(BR.text)}"`);
+  if(d.compare) mofu.push(`<span class="tag">Compare / panduan pilih</span>${esc(d.compare)}`);
+  if(d.gift){mofu.push(`<span class="tag">Pembeli kedua</span>Bicara ke ${esc(or(d.giftwho,"pembeli kedua"))}: "${esc(or(d.giftfear,"apa ketakutannya"))}". Rotasi momen: ${esc(or(d.giftmoment,"momen relevan"))}.`);
+    mofu.push(`<span class="tag">Cerita pembeli kedua</span>${esc(CAT.second.h2(P))}`)}
+  if(d.pangka||d.psold) mofu.push(`<span class="tag">Proof angka</span>${esc([d.pangka,d.psold].filter(Boolean).join(" · "))}`);
+
+  const bofu=[];
+  if(d.kode) bofu.push(`<span class="tag">${lead?"Follow-up":"Keranjang"}</span>"Udah masuk keranjang? Pakai ${esc(d.kode)}${d.nilai?` (${esc(d.nilai)})`:""}."`);
+  if(d.kode && !lead) bofu.push(`<span class="tag">Wishlist</span>"Udah lama naksir ${esc(P)}? Ini saat yang tepat."`);
+  if(CAT.ui.bofuFallback) bofu.push(`<span class="tag">Reminder hangat</span>"${esc(CAT.ui.bofuFallback)}"`);
+  if(d.bundling) bofu.push(`<span class="tag">Bundling / bonus</span>${esc(d.bundling)}`);
+  if(d.scar && d.scarok) bofu.push(`<span class="tag">Urgency faktual</span>${esc(d.scar)}`);
+  if(d.risk) bofu.push(`<span class="tag">Risk reversal</span>${esc(d.risk)}`);
+  if(!bofu.length) bofu.push(`<span class="empty">Isi Langkah 7 untuk membentuk iklan penutup.</span>`);
+  const li = arr=>arr.length?`<ol>${arr.map(x=>`<li>${x}</li>`).join("")}</ol>`:`<p class="empty">Belum ada bahan — lengkapi langkah terkait.</p>`;
+
+  const notes=[];
+  const W=(t,b)=>notes.push(`<div class="note warn"><b>${t}</b>${b}</div>`);
+  const T=(t,b)=>notes.push(`<div class="note tip"><b>${t}</b>${b}</div>`);
+  const O=(t,b)=>notes.push(`<div class="note ok"><b>${t}</b>${b}</div>`);
+  if(!janji) W("Janji inti belum ada","Tanpa janji tunggal, kreatif yang banyak akan terasa acak. Selesaikan Langkah 1 sebelum brief creator apa pun.");
+  if(proofs.length && !(d.b1ok&&d.b2ok&&d.b3ok)) W("Ada bukti yang tidak bisa diperagakan","Ganti bukti yang tidak lolos tes adegan 3 detik. Klaim yang tidak terlihat di kamera hanya jadi copy, bukan bukti.");
+  if(d.alasan==="Diskon / promo") W("Penjualan masih bergantung diskon","Margin tergerus dan audiens terlatih menunggu promo. Geser porsi kreatif ke demo value; diskon hanya untuk retargeting hangat. Ukur 4-6 minggu sebelum menyimpulkan.");
+  if(d.alasan==="Harga paling murah") W("Posisi \"termurah\" itu rapuh","Pesaing selalu bisa lebih murah. Pindahkan alasan beli ke bukti yang sulit ditiru: proses, kepastian, kualitas. Harga tetap disebut, tapi lewat jembatan harga, bukan sebagai janji inti.");
+  if(d.tujuan && d.tujuan!=="Landing page pre-sell"){
+    if(lead) T("Saring lead sebelum WhatsApp",`Traffic langsung ke <b>${esc(d.tujuan)}</b> menghasilkan banyak chat yang hanya tanya harga. Uji halaman "5 Alasan" singkat + harga/estimasi di depan, lalu bandingkan <i>closing rate</i>, bukan jumlah chat.`);
+    else if(mp) T("Marketplace boleh, tapi halaman tokonya harus menjual",`Romelle mengarahkan 81% iklan ke halaman pre-sell. Di marketplace, terapkan strukturnya di 9 foto produk: janji → 3 bukti → demo → review. Untuk produk di atas ±Rp150 ribu, uji juga LP "5 Alasan ${esc(P)}".`);
+    else T("Bangun halaman pre-sell sebelum menambah kreatif",`Traffic sekarang ke <b>${esc(d.tujuan)}</b>. Mulai dari 1 halaman "5 Alasan ${esc(P)}" dan A/B dengan tujuan sekarang.`);
+  }
+  if(demoKeys.length<6) T("Demo library masih tipis",`Baru ${demoKeys.length} jenis demo. Prioritaskan fill test dan close-up dulu — paling murah diproduksi dan paling sering jadi pemenang.`);
+  if(personas.length && personas.length<5) T("Pintu masuk kurang",`Baru ${personas.length} persona. Tanpa variasi persona, algoritma Meta cenderung menganggap kreatifmu mirip satu sama lain.`);
+  if(N && N<12) T("Volume kreatif rendah",`${N} kreatif/bulan cukup untuk satu hero saja. Jangan launch produk/layanan baru sebelum kapasitas naik, atau launch kit akan memakan seluruh kuota.`);
+  if((d.pangka||d.psold) && !d.pver) W("Klaim angka belum terverifikasi","Jangan tayangkan angka penjualan/sold out/rating tanpa data internal. Risiko ke kepercayaan dan kebijakan iklan jauh lebih besar dari upside-nya.");
+  if(d.scar && !d.scarok) W("Urgency tidak faktual","Hapus dari rencana. Urgency palsu merusak kepercayaan dan bisa kena penolakan iklan.");
+  if(!d.gift) T("Cek ulang jalur pembeli kedua","Di Romelle, 6 dari 30 slot impresi teratas datang dari pembeli yang bukan pemakai. Pikirkan: kado, B2B/kantor, keluarga yang membantu memutuskan.");
+  CAT.notes.forEach(([a,c])=>T(a,c));
+  if(score>=80 && !notes.some(n=>n.includes("note warn"))) O("Funnel siap dieksekusi","Jalankan gelombang pertama, biarkan 2-4 minggu, lalu scale dengan mengganti SATU elemen konsep (persona, momen, demo, atau proof).");
+  T("Cara membaca hasil",`KPI utama untuk kategori ini: <b>${CAT.kpi}</b>. Jangan nilai iklan TOFU dari hasil 1 hari, dan iklan yang bertahan lama adalah jangkar — jangan dimatikan hanya karena bosan.`);
+
+  const briefs = cells.slice(0,3).map((c,i)=>`<div class="brief"><b>Brief creator #${i+1} — ${esc(c.p)} × ${esc(c.mo)}</b><dl style="margin-top:8px">
+   <dt>Hook (0-3 dtk)</dt><dd>${esc(c.h)}</dd><dt>Demo utama</dt><dd>${esc(c.demo)}</dd><dt>Janji inti</dt><dd>${esc(janji||"[janji inti]")}</dd>
+   <dt>CTA</dt><dd>${lead?`Chat WhatsApp / cek 5 alasan → ${esc(lpMain)}`:mp?"Cek di toko kami (link di bio/tombol)":`Cek 5 alasan ${esc(P)} → ${esc(lpMain)}`}</dd>
+   <dt>Setting</dt><dd>Lokasi nyata sesuai momen (${esc(lc(c.mo))}), bahasa sehari-hari</dd></dl></div>`).join("");
+
+  const L = or(d.lnama,"");
+  const launch = L ? `<ol>
+   <li><span class="tag">Intro</span>"Kenalan sama ${esc(L)}" — ${esc(or(d.lbeda,"apa bedanya"))}</li>
+   <li><span class="tag">Demo</span>Demo utama khusus ${esc(L)}</li>
+   <li><span class="tag">Use case</span>1-2 persona dari matriks yang paling cocok dengan ${esc(L)}</li>
+   <li><span class="tag">Compare</span>${esc(P)} vs ${esc(L)}: mana yang cocok buat kamu?</li>
+   <li><span class="tag">Offer</span>Penutup untuk audiens hangat${d.kode?` dengan ${esc(d.kode)}`:d.bundling?` — ${esc(d.bundling)}`:""}</li>
+   ${/ya/i.test(d.lasal||"")?`<li><span class="tag">Komunitas</span>"You asked, we made it" — pakai komentar aslinya sebagai hook</li>`:""}
+   <li><span class="tag">Halaman</span>/pages/5-alasan-${slug(L)} — tayang di hari yang sama</li></ol><p class="dest">Tanggal: ${esc(or(d.ltgl,"[tentukan]"))}. Semua aset keluar bersamaan, jangan menunggu TOFU "matang".</p>` : `<p class="empty">Isi Langkah 8 kalau ada produk/layanan baru.</p>`;
+
+  const matrix = cells.length ? `<div class="scroll"><table class="matrix"><tr><th>Persona \\ Momen</th>${momens.map(m=>`<th>${esc(m)}</th>`).join("")}</tr>${personas.map((p,pi)=>`<tr><th>${esc(p)}</th>${momens.map((m,mi)=>{const c=cells[pi*momens.length+mi];return `<td><div class="ht">${c.ht}</div>${esc(c.h)}</td>`}).join("")}</tr>`).join("")}</table></div><p class="dest" style="margin-top:8px">${cells.length} ide iklan. Janji & bukti tetap sama di semua sel — hanya konteks dan hook yang berubah. Hook di sini adalah titik awal, tulis ulang sebelum dikirim ke creator.</p>` : `<p class="empty">Isi persona dan momen di Langkah 2.</p>`;
+
+  $("#output").innerHTML = `
+  <div class="out-head"><div><div class="eyebrow">Output otomatis</div><h2>Blueprint Funnel ${esc(B)}</h2></div><button id="btnCopy">Salin semua output</button></div>
+  <div id="outBody">
+  <div class="promise ocard"><div class="eyebrow">Janji inti · ${esc(P)}</div>
+    <div class="big">${esc(janji||"Isi Langkah 1 untuk membentuk janji inti")}</div>
+    <div class="proofs"><div><b>Bukti 1 · Fungsi</b>${esc(or(d.b1,"—"))}</div><div><b>Bukti 2 · Kualitas</b>${esc(or(d.b2,"—"))}</div><div><b>Bukti 3 · Identitas</b>${esc(or(d.b3,"—"))}</div></div>
+    <div class="bridge"><b>Jembatan harga:</b> ${BR.ok?`${BR.calc}. "${esc(BR.text)}"`:"isi harga & pembagi di Langkah 0."}${d.alternatif&&BR.ok&&CATK!=="emas"?` Bandingkan dengan ${esc(d.alternatif)}.`:""}</div>
+    ${d.sig?`<div class="bridge" style="background:rgba(255,255,255,.06)"><b>Signature:</b> ${esc(d.sig)}</div>`:""}
+  </div>
+  <div class="ocard"><h3>Skor kesiapan funnel</h3><div class="score">
+   <div class="ring" style="background:conic-gradient(${ringColor} ${score*3.6}deg,var(--line) 0);"><div style="width:76px;height:76px;border-radius:50%;background:#fff;display:grid;place-items:center">${score}</div></div>
+   <ul class="checklist" style="flex:1;min-width:260px">${checks.map(c=>`<li><span class="ic ${c[0]?"y":"n"}">${c[0]?"✓":""}</span>${c[1]}</li>`).join("")}</ul></div></div>
+  <div class="ocard"><h3>Strategi & catatan</h3>${notes.join("")}</div>
+  <div class="ocard"><h3>Peta funnel bulan ini${N?` · ${N} kreatif`:""}</h3>
+   ${N?`<div class="alloc"><div style="flex:${t||0.01};background:var(--tofu)">TOFU ${t}</div><div style="flex:${m||0.01};background:var(--mofu)">MOFU ${m}</div><div style="flex:${b||0.01};background:var(--bofu)">BOFU ${b}</div></div><p class="dest">Porsi ±58/25/17 dari pola Romelle. Ini porsi <i>jumlah materi</i>, bukan anggaran — anggaran tetap mengikuti KPI akun.</p>`:`<p class="empty">Isi kapasitas kreatif per bulan di Langkah 0 untuk melihat alokasi.</p>`}
+   <div class="stage tofu"><h4>TOFU — bikin orang merasa "ini aku"${N?` (${t} materi)`:""}</h4><div class="task">Tujuan: ${esc(tofuDest)}</div>${li(tofu.slice(0,Math.max(t,6)))}</div>
+   <div class="stage mofu"><h4>MOFU — jawab "kenapa harus ini"${N?` (${m} materi)`:""}</h4><div class="task">Tujuan: halaman khusus per keberatan (objection listicle, social proof wall, halaman pembeli kedua, panduan pilih)</div>${li(mofu)}</div>
+   <div class="stage bofu"><h4>BOFU — tutup keraguan terakhir${N?` (${b} materi)`:""}</h4><div class="task">${lead?"Tujuan: WhatsApp dengan pesan pembuka terisi. Audiens: hangat (chat belum closing, visitor halaman, video viewer).":"Tujuan: product page atau halaman yang sama + kode. Audiens: hangat saja (engaged, ATC, visitor)."}</div>${li(bofu)}</div>
+  </div>
+  <div class="ocard" id="journey"><h3>Simulasi perjalanan calon pembeli</h3>
+   <p class="dest" style="margin-top:-6px">Dari orang yang belum kenal ${esc(B)} sampai ${lead?"closing":"checkout"}: iklan mana yang dia lihat, kapan, dan kenapa. Ini jalur ilustrasi untuk menjelaskan logika funnel, bukan data — orang nyata bisa melompati tahap atau butuh berminggu-minggu.</p>
+   <div class="jr-top"><select id="jrPer"></select>
+    <div class="jr-ctrl"><button type="button" id="jrPrev">◀</button><button type="button" id="jrPlay" class="primary">❚❚ Jeda</button><button type="button" id="jrNext">▶</button><button type="button" id="jrRe">↺ Ulang</button></div></div>
+   <div class="track" id="jrTrack"></div>
+   <div class="jr-body"><div class="phone"><div class="screen" id="jrScreen"></div></div><div class="jr-info" id="jrInfo"></div></div>
+  </div>
+  <div class="ocard"><h3>Matriks pintu masuk: Persona × Momen</h3>${matrix}</div>
+  <div class="ocard"><h3>Brief creator siap kirim</h3><p class="dest">Formula: 1 hook + 1 demo + 1 kalimat janji inti + CTA.</p>${briefs||`<p class="empty">Isi Langkah 2 & 4 untuk membentuk brief.</p>`}</div>
+  <div class="ocard lp"><h3>Kerangka halaman pre-sell · <span style="font-family:Inter;font-size:14px;color:var(--muted)">${esc(lpMain)}</span></h3>
+   <ol>
+    <li><b>Bar janji:</b> ${esc(or(d.lpbar,"[risk reversal]"))}</li>
+    <li><b>Headline:</b> 5 Alasan ${esc(P)} Jadi ${esc(or(d.lphasil,"[hasil persona]"))}<br><span class="dest">${esc(or(d.lpsub,""))}</span></li>
+    <li><b>Rating & jumlah pembeli di atas lipatan:</b> ${esc(or(d.pangka,"[data asli]"))}${d.pver?"":" <span style='color:var(--warn)'>(verifikasi dulu)</span>"}</li>
+    <li><b>Lima alasan</b> (1 kalimat manfaat + 1 kalimat bukti):${reasons.length?reasons.map((r,i)=>`<div class="r"><b>${i+1}.</b> ${esc(r)}</div>`).join(""):`<div class="empty">Isi alasan di Langkah 6.</div>`}</li>
+    <li><b>Origin:</b> ${esc(or(d.origin,"[kalimat origin]"))}</li>
+    <li><b>Video real life</b> — pakai demo: ${esc(demoTxt[0]||"[demo]")}</li>
+    <li><b>${lead?"Tombol WhatsApp + estimasi harga":"Buy box"}:</b> ${harga?rp(harga):"[harga]"}${lead?" (dengan pesan pembuka terisi)":" + varian"}</li>
+    <li><b>Review + FAQ keberatan:</b> ${objs.map(o=>esc(o[1])).join(" · ")||"[keberatan]"}</li>
+   </ol>
+   <p class="dest">Turunan berikutnya (beri kode seri lp00x / list00x supaya bisa dilacak): ${[d.ot?"halaman keberatan kepercayaan":null,(d.pangka||d.psold)?"social proof wall":null,d.gift?`halaman pembeli kedua (${CAT.second.lp})`:null,pains.length?"problem-solution page":null].filter(Boolean).join(", ")||"lengkapi langkah 3 & 5"}.</p>
+  </div>
+  <div class="ocard"><h3>Social proof — urutan tumpukan</h3>
+   <ol class="lp"><li><b>Volume:</b> ${d.pcreator?`${esc(d.pcreator)} creator/pelanggan berbeda bulan ini`:"[jumlah creator]"}</li><li><b>Reaksi:</b> ${esc(or(d.preaksi,"—"))}</li><li><b>Angka:</b> ${esc([d.pangka,d.psold].filter(Boolean).join(" · ")||"—")}</li><li><b>Loyalitas:</b> ${esc(or(d.ployal,"—"))}</li><li><b>Komunitas:</b> ${esc(or(d.pkom,"—"))}</li><li><b>Di halaman:</b> rating + review berfoto</li></ol>
+   <p class="dest">Satu iklan cukup 1-2 lapis. Funnel yang menumpuknya.</p></div>
+  <div class="ocard"><h3>Launch kit${L?` · ${esc(L)}`:""}</h3>${launch}</div>
+  <div class="ocard"><h3>Ritme 4 minggu pertama</h3><div class="week">
+   <div><b>Minggu 1</b>Halaman pre-sell live. Produksi ${Math.min(t,cells.length)||"batch"} TOFU dari matriks + 2-3 BOFU penutup.${lead?" Siapkan template balasan WA.":""}</div>
+   <div><b>Minggu 2</b>Tayang TOFU + BOFU retargeting. Mulai produksi MOFU keberatan & ${d.gift?"pembeli kedua":"compare"}.</div>
+   <div><b>Minggu 3</b>MOFU tayang. Baca hasil per konsep (bukan per iklan). Matikan yang jelas boros.</div>
+   <div><b>Minggu 4</b>Scale pemenang dengan ganti SATU elemen (persona/momen/demo/proof). Siapkan gelombang berikut.</div>
+  </div></div>
+  </div>`;
+  JCTX = {d,B,P,K,janji,personas,cells,objs,BR,lpMain,reasons,L,demoTxt,lead};
+  renderJourney();
+  $("#btnCopy").onclick = async()=>{try{await navigator.clipboard.writeText($("#outBody").innerText);toast("Output tersalin")}catch(e){toast("Gagal menyalin — blok teks lalu salin manual")}};
+}
+
+/* ---------- JOURNEY ---------- */
+let JCTX=null, jP=0, jI=0, jPlay=true, jTimer=null;
+const DUR=3800;
+const AW=["Belum kenal","Sadar masalah","Sadar solusi","Kenal produk","Siap beli","Pelanggan"];
+const SC={tofu:["TOFU","var(--tofu)","linear-gradient(160deg,#2f6f8f,#1d4459)"],mofu:["MOFU","var(--mofu)","linear-gradient(160deg,#a8733f,#6b4423)"],bofu:["BOFU","var(--bofu)","linear-gradient(160deg,#2f7a4f,#1c4d31)"],lp:["Halaman","var(--accent-2)"],cart:["Niat beli","var(--mofu)"],buy:["Closing","var(--bofu)"],loyal:["Retensi","var(--accent)","linear-gradient(160deg,#3a2a1e,#6b4423)"]};
+
+function makeSteps(c){
+  const {d,B,P,K,janji,personas,cells,objs,BR,lpMain,L,demoTxt,lead}=c, U=CAT.ui;
+  const isSecond = d.gift && jP===personas.length;
+  const per = isSecond ? or(d.giftwho,"Pembeli kedua") : (personas[jP]||"Calon pembeli");
+  const row = cells.filter(x=>x.p===per);
+  const c0 = row[0]||{ht:"Pain",h:`Pernah nggak sih ribet cari ${K} yang pas?`,demo:demoTxt[0]||"demo produk",mo:"sehari-hari"};
+  const c1 = row[1]||row[0]||{ht:"POV",h:`POV: akhirnya nemu ${K} yang beda.`,demo:demoTxt[1]||demoTxt[0]||"close-up produk",mo:"momen lain"};
+  const o1 = objs[0], o2 = objs[1]||objs[2];
+  const warmAud = lead?"Retarget: visitor halaman / video view 50% / chat belum closing (7-14 hari)":"Retarget: visitor LP / video view 50% (7-14 hari)";
+  const s=[];
+  if(isSecond){
+    s.push({day:"Hari 1",st:"tofu",aw:1,title:`Pembeli kedua bertemu ${B}`,aud:"Broad / interest pembeli kedua",fmt:"Pembeli kedua",hook:CAT.second.h1(per,P),demo:demoTxt[0]||"",cta:"Lihat selengkapnya",note:`Dia bukan pemakai ${P}. Pintu masuknya adalah masalah dia sendiri, bukan masalah pemakai.`});
+    s.push({day:"Hari 2",st:"tofu",aw:2,title:"Melihat cerita pembeli kedua lain",aud:"Broad / interest pembeli kedua",fmt:"Cerita / reaksi",hook:CAT.second.h2(P),demo:"Reaksi atau cerita asli",cta:"Lihat caranya",note:`Proof by reaksi. Janji yang sama (${janji||"janji inti"}) dibawa lewat cerita orang seperti dia.`});
+    s.push({day:"Hari 2",st:"lp",aw:3,scr:"lp",title:"Buka halaman khusus pembeli kedua",aud:CAT.second.lp,note:"Halaman khusus untuk dia, bukan halaman pemakai. Tertarik, tapi masih takut salah pilih."});
+    s.push({day:"Hari 4",st:"mofu",aw:3,title:"Ketakutannya dijawab",aud:"Retarget: visitor halaman pembeli kedua 7 hari",fmt:"Objection pembeli kedua",hook:or(d.giftfear,"Takut salah pilih? Ini jaminannya."),demo:or(d.risk,""),cta:"Lihat jaminannya",note:"Satu keberatan, satu iklan. Risk reversal jadi pesan utama."});
+  } else {
+    s.push({day:"Hari 1",st:"tofu",aw:1,title:`Pertama kali melihat ${B}`,aud:"Broad / interest — orang baru",fmt:c0.ht,hook:c0.h,demo:c0.demo,cta:"Lihat selengkapnya",note:`Belum kenal ${B} sama sekali. Berhenti scroll karena hook ${c0.ht.toLowerCase()} terasa "ini aku" untuk ${per.toLowerCase()}. Tidak ada diskon, cuma demo value.`});
+    s.push({day:"Hari 2",st:"tofu",aw:2,title:"Melihat lagi, konteks berbeda",aud:"Broad — frekuensi alami",fmt:c1.ht,hook:c1.h,demo:c1.demo,cta:"Cek 5 alasannya",note:`Pintunya beda (${c1.mo.toLowerCase()}), janjinya sama. Pengulangan janji inilah yang bikin ${P} mulai nempel. Kali ini dia klik.`});
+    s.push({day:"Hari 2",st:"lp",aw:3,scr:"lp",title:`Baca halaman "5 Alasan ${P}"`,aud:lpMain,note:`Lihat rating, 5 alasan, video real life. Tertarik, tapi belum ${lead?"chat":"beli"}. Ini normal — kebanyakan pengunjung pertama memang belum bergerak.`});
+    s.push({day:"Hari 4",st:"mofu",aw:3,title:o1?`Keraguan ${o1[0]} dijawab`:"Keraguan pertama dijawab",aud:warmAud,fmt:o1?`Objection ${o1[0]}`:"Proof",hook:o1?o1[1]:"Kenapa harus ini?",demo:o1?or(o1[2],""):"",cta:"Lihat buktinya",note:"MOFU tidak mengulang perkenalan. Tugasnya menjawab satu alasan dia belum bergerak."});
+  }
+  if(BR.ok) s.push({day:"Hari 5",st:"mofu",aw:3,title:"Harga dibingkai ulang",aud:"Retarget: engaged 14 hari",fmt:"Jembatan harga",hook:BR.text,demo:"",cta:"Lihat detail",note:"Harga tidak diturunkan, cara melihatnya yang diubah."});
+  if(o2 && !isSecond) s.push({day:"Hari 6",st:"mofu",aw:4,title:`Keraguan ${o2[0]} dijawab`,aud:"Retarget: engaged 14 hari",fmt:`Objection ${o2[0]}`,hook:o2[1],demo:or(o2[2],""),cta:"Baca cerita pelanggan",note:`Keraguan terakhir sebelum dia berani ${lead?"chat":"masukkan ke keranjang"}.`});
+  else if(d.pangka||d.psold) s.push({day:"Hari 6",st:"mofu",aw:4,title:"Melihat bukti angka",aud:"Retarget: engaged 14 hari",fmt:"Social proof",hook:[d.pangka,d.psold].filter(Boolean).join(" · "),demo:"",cta:"Lihat ulasan",note:"Proof by angka — hanya yang faktual."});
+  s.push({day:"Hari 7",st:"cart",aw:4,scr:"cart",title:U.cartTitle,aud:U.cartEvent,note:U.cartNote});
+  const bh = d.kode?`Udah ${lead?"tanya harga":"masuk keranjang"}? Pakai ${d.kode}${d.nilai?` — ${d.nilai}`:""}.`:(U.bofuFallback||`Udah lama naksir ${P}? Ini saat yang tepat.`);
+  s.push({day:"Hari 8",st:"bofu",aw:4,title:"Diingatkan dengan penutup",aud:lead?"Retarget: chat belum closing / visitor halaman (3-7 hari)":"Retarget: ATC belum beli (3-7 hari)",fmt:"Penutup",hook:bh,demo:or(d.bundling,or(d.risk,"")),cta:lead?"Chat sekarang":"Checkout sekarang",note:"Offer menutup, bukan membuka. Value sudah dimenangkan di TOFU dan MOFU; penutup ini cuma menghapus alasan terakhir untuk menunda."});
+  s.push({day:"Hari 8",st:"buy",aw:5,scr:"done",title:U.doneTitle+" ✓",aud:lead?"Closing (dicatat manual / CRM)":"Event: Purchase",note:`${s.filter(x=>["tofu","mofu","bofu"].includes(x.st)).length} iklan berbeda, 1 janji yang sama. Tidak ada satu iklan pun yang "menjual sendirian".`});
+  s.push({day:"Hari 30+",st:"loyal",aw:5,title:L?`Ditawari ${L}`:U.loyalDefault,aud:"Custom audience: pelanggan 30-180 hari",fmt:L?"Launch kit":"Retensi",hook:L?(/ya/i.test(d.lasal||"")?`You asked, we made it: ${L}.`:`Kenalan sama ${L}.`):U.loyalHook(P),demo:L?or(d.lbeda,""):"Konten pelanggan",cta:L?"Lihat yang baru":"Lihat selengkapnya",note:"Pelanggan bukan akhir funnel. Mereka target pertama launch berikutnya dan sumber proof loyalitas."});
+  return {s,per};
+}
+function renderJourney(){
+  if(!JCTX||!$("#jrScreen")) return;
+  const c=JCTX, sel=$("#jrPer"), U=CAT.ui;
+  const opts=[...c.personas]; if(c.d.gift) opts.push(CAT.secondIcon+" "+or(c.d.giftwho,"Pembeli kedua"));
+  if(!opts.length) opts.push("Calon pembeli");
+  if(jP>=opts.length) jP=0;
+  sel.innerHTML=opts.map((o,i)=>`<option value="${i}"${i===jP?" selected":""}>Persona: ${esc(o)}</option>`).join("");
+  sel.onchange=()=>{jP=+sel.value;jI=0;renderJourney()};
+  const {s,per}=makeSteps(c);
+  if(jI>=s.length) jI=0;
+  const st=s[jI], sc=SC[st.st];
+  const pct=i=>s.length>1? i/(s.length-1)*100 : 0;
+  $("#jrTrack").innerHTML=`<div class="line"></div><div class="fill" style="width:${pct(jI)}%"></div>`+
+    s.map((x,i)=>`<div class="pt ${i<=jI?"done":""} ${i===jI?"on":""}" data-i="${i}" style="left:${pct(i)}%;color:${SC[x.st][1]}"><span>${i===0||i===s.length-1||i===jI?x.day:""}</span></div>`).join("")+
+    `<div class="me" style="left:${pct(jI)}%">${esc(per.charAt(0).toUpperCase())}</div>`;
+  $("#jrTrack").querySelectorAll(".pt").forEach(p=>p.onclick=()=>{jI=+p.dataset.i;renderJourney()});
+  const stories=`<div class="stories ${jPlay?"":"paused"}" style="--dur:${DUR}ms">${s.map((_,i)=>`<i class="${i<jI?"past":i===jI?"now":""}"><b></b></i>`).join("")}</div>`;
+  let body;
+  if(st.scr==="lp"){
+    const rs=(c.reasons.length?c.reasons:["Alasan 1","Alasan 2","Alasan 3"]).slice(0,4);
+    body=`<div class="scr lpm"><div class="bar1">${esc(or(c.d.lpbar,"Free shipping · Free return · Original"))}</div><h5>5 Alasan ${esc(c.P)} Jadi ${esc(or(c.d.lphasil,"Pilihan Favorit"))}</h5><div class="stars">★★★★★ <span style="color:#888;font-size:11px">${esc(or(c.d.pangka,"rating asli"))}</span></div>${rs.map((r,i)=>`<div class="rr" style="animation-delay:${.25+i*.35}s"><b>${i+1}.</b> ${esc(r)}</div>`).join("")}</div>`;
+  } else if(st.scr==="cart"){
+    body=`<div class="scr cartm"><div class="bag">${U.cartIcon}</div><b>${esc(U.cartScr)}</b><div style="font-size:13px">${esc(c.P)}${c.d.harga&&!c.lead?" · "+rp(c.d.harga):""}</div><div style="font-size:12px;color:#888">${esc(U.cartSub)}</div></div>`;
+  } else if(st.scr==="done"){
+    body=`<div class="scr donem"><div class="tick">✓</div><b>${esc(U.doneTitle)}</b><div style="font-size:13px">${esc(c.P)}</div><div style="font-size:12px;color:#888">${esc(U.doneSub)}</div></div>`;
+  } else {
+    body=`<div class="scr"><div class="adhead"><div class="av">${esc(c.B.charAt(0))}</div><div><b>${esc(c.B)}</b><small>Bersponsor · ${sc[0]}</small></div></div>
+     <div class="creative" style="background:${sc[2]}"><div class="blob"></div><div class="fmt">${esc(st.fmt)}</div><div class="hk">${esc(st.hook)}</div>${st.demo?`<div class="dm">▶ ${esc(st.demo)}</div>`:""}</div>
+     <div class="ctab"><span>${esc(st.cta)}</span><span>›</span></div></div>`;
+  }
+  $("#jrScreen").innerHTML=stories+body;
+  $("#jrInfo").innerHTML=`<div class="day" style="color:${sc[1]}">${st.day} · ${sc[0]}</div><h4>${esc(st.title)}</h4><div class="aud">🎯 ${esc(st.aud)}</div><p>${esc(st.note)}</p>
+   <div class="aw">${AW.map((_,i)=>`<div class="${i<=st.aw?"on":""}"></div>`).join("")}</div><div class="awl"><span>${AW[0]}</span><b style="color:var(--accent)">${AW[st.aw]}</b><span>${AW[5]}</span></div>
+   <div class="jr-log">${s.map((x,i)=>`<div data-i="${i}" class="${i===jI?"on":""}"><b>${x.day}</b>${SC[x.st][0]} — ${esc(x.title)}</div>`).join("")}</div>`;
+  $("#jrInfo").querySelectorAll(".jr-log div").forEach(e=>e.onclick=()=>{jI=+e.dataset.i;renderJourney()});
+  $("#jrPlay").textContent=jPlay?"❚❚ Jeda":"▶ Putar";
+  $("#jrPlay").onclick=()=>{jPlay=!jPlay;renderJourney()};
+  $("#jrNext").onclick=()=>{jI=(jI+1)%s.length;renderJourney()};
+  $("#jrPrev").onclick=()=>{jI=(jI-1+s.length)%s.length;renderJourney()};
+  $("#jrRe").onclick=()=>{jI=0;jPlay=true;renderJourney()};
+  clearTimeout(jTimer);
+  if(jPlay) jTimer=setTimeout(()=>{jI=(jI+1)%s.length;renderJourney()},DUR);
+}
+
+/* ---------- PROGRESS & EVENTS ---------- */
+function progress(){
+  const els=[...form.querySelectorAll("input[type=text],input[type=number],textarea,select")];
+  const p=els.length?Math.round(els.filter(e=>e.value.trim()).length/els.length*100):0;
+  $("#progBar").style.width=p+"%"; $("#progTxt").textContent=p+"% terisi";
+}
+let tmr;
+form.addEventListener("input",()=>{save();progress();clearTimeout(tmr);tmr=setTimeout(build,250)});
+form.addEventListener("change",()=>{save();progress();build()});
+form.addEventListener("click",e=>{
+  const b=e.target.closest(".use"); if(!b) return;
+  form.querySelector(`[name="${b.dataset.t}"]`).value=b.dataset.v;
+  if(b.dataset.t.startsWith("dt_")) form.querySelector(`[name="d_${b.dataset.t.slice(3)}"]`).checked=true;
+  save();progress();build();
+});
+$("#btnDemo").onclick=()=>{setData(exData());save();progress();build();toast(`Contoh ${CAT.ref} terisi — ganti dengan data brand-mu`)};
+$("#btnReset").onclick=()=>{setData({});save();progress();build();toast("Worksheet kategori ini dikosongkan")};
+$("#btnGo").onclick=()=>$("#output").scrollIntoView({behavior:"smooth"});
+
+loadStore(); renderForm(); setData(STORE[CATK]||{}); progress(); build();
+
+</script>
+</body>
+</html>
